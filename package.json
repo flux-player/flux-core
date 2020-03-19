@@ -1,0 +1,22 @@
+{
+  "name": "flux-core",
+  "version": "0.0.1",
+  "description": "Core components for the Flux project",
+  "main": "dist/index.js",
+  "repository": "https://github.com/flux-player/flux-core.git",
+  "author": "Melvin Mupondori <melvin@alcra.co.zw>",
+  "license": "MIT",
+  "types": "dist/types.d.ts",
+  "prepublish": "tsc",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --forceExit --coverage --verbose",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+    "watch-test": "npm run test -- --watchAll"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0"
+  }
+}
