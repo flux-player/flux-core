@@ -2,10 +2,10 @@ import {
     writeFile as _writeFile,
     stat as _stat,
     readdir as _readDir,
+    readFile as _readFile,
     Stats
 } from "fs"
 
-import {extname} from "path"
 import {URL} from "url";
 
 /**
@@ -14,7 +14,7 @@ import {URL} from "url";
  * @param fileName  filename or file descriptor
  * @param data Data to write to file
  */
-const writeFile = (fileName: string | Buffer | URL, data: string | Buffer | Uint8Array): Promise<void> => {
+export const writeFile = (fileName: string | Buffer | URL, data: string | Buffer | Uint8Array): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
         _writeFile(fileName, data, (err: any) => {
             if (err) reject(err);
@@ -25,11 +25,27 @@ const writeFile = (fileName: string | Buffer | URL, data: string | Buffer | Uint
 };
 
 /**
+ * Asynchronously reads data from a file
+ * If a file descriptor is provided, the underlying file will _not_ be closed automatically.
+ *
+ * @param fileName  filename or file descriptor
+ */
+export const readFile = (fileName: string | Buffer | URL): Promise<Buffer> => {
+    return new Promise<Buffer>((resolve, reject) => {
+        _readFile(fileName, (err: any, data) => {
+            if (err) reject(err);
+
+            resolve(data);
+        });
+    });
+};
+
+/**
  * Return information about a file, in the buffer
  *
  * @param path
  */
-const stat = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<Stats> => {
+export const stat = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<Stats> => {
     return new Promise<Stats>(((resolve, reject) => {
         _stat(path, (err, stats) => {
             if (err) return reject(err);
@@ -44,7 +60,7 @@ const stat = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<Stats> 
  *
  * @param path
  */
-const readDir = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<string[]> => {
+export const readDir = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<string[]> => {
     return new Promise<string[]>(((resolve, reject) => {
         _readDir(path, (err, files) => {
             if (err) return reject(err);
