@@ -4,7 +4,7 @@
   "description": "Core components for the Flux project",
   "main": "dist/index.js",
   "repository": "https://github.com/flux-player/flux-core.git",
-  "author": "Melvin Mupondori <melvin@alcra.co.zw>",
+  "author": "Melvin Mupondori",
   "license": "MIT",
   "types": "dist/types.d.ts",
   "prepublish": "tsc",
