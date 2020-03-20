@@ -1,11 +1,10 @@
-import {TextDecode} from 'text-encoding'
 /**
  * ID3v2 metadata comes at the beginning of the MP3 file and starts off with a 10 byte header.
  */
 const HEADER_SIZE = 10;
 
 /**
- * Grab the rest of the frame and decode the bytestream based on the encoding byte. For example, when encoding is set to
+ * Possible values for encoding byte. For example, when encoding is set to
  * 0 we interpret the frame’s content as ascii.
  */
 const ID3_ENCODINGS = [
@@ -100,7 +99,13 @@ const decode = (format: string, data: Uint8Array) => {
     return new TextDecoder(format).decode(data)
 };
 
-const read = async (buffer: ArrayBufferLike) => {
+
+/**
+ * Read the tags from the specified data
+ *
+ * @param buffer The data to read from
+ */
+export const read = async (buffer: ArrayBufferLike) => {
     let header = new DataView(buffer, 0, HEADER_SIZE);
 
     let size = syncToInt(header.getUint32(6));
