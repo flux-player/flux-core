@@ -1,9 +1,11 @@
 import {
     writeFile as _writeFile,
     stat as _stat,
+    readdir as _readDir,
     Stats
 } from "fs"
 
+import {extname} from "path"
 import {URL} from "url";
 
 /**
@@ -33,6 +35,21 @@ const stat = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<Stats> 
             if (err) return reject(err);
 
             resolve(stats);
+        })
+    }))
+};
+
+/**
+ * Reads the contents of a directory.
+ *
+ * @param path
+ */
+const readDir = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<string[]> => {
+    return new Promise<string[]>(((resolve, reject) => {
+        _readDir(path, (err, files) => {
+            if (err) return reject(err);
+
+            resolve(files);
         })
     }))
 };
