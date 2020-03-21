@@ -5,8 +5,8 @@ import {
     readFile as _readFile,
     Stats
 } from "fs"
-
 import {URL} from "url";
+import {extname} from "path"
 
 /**
  * Asynchronously writes data to a file, replacing the file if it already exists. data can be a string or a buffer.
@@ -60,7 +60,7 @@ export const stat = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<
  *
  * @param path
  */
-export const readDir = (path: string | Buffer | URL): Promise<Stats> | PromiseLike<string[]> => {
+export const readDir = (path: string | Buffer | URL): Promise<string[]> | PromiseLike<string[]> => {
     return new Promise<string[]>(((resolve, reject) => {
         _readDir(path, (err, files) => {
             if (err) return reject(err);
@@ -69,3 +69,20 @@ export const readDir = (path: string | Buffer | URL): Promise<Stats> | PromiseLi
         })
     }))
 };
+
+
+/**
+ * Check if a file has any of the extensions we want to check
+ *
+ * @param file The filename to check
+ * @param extensions The extension to match
+ */
+export const hasAnyExtension = (file: string, extensions: string[]) => {
+    let extension = extname(file);
+
+    // Check if the file's extension matches any that we want
+    let matches = extensions.filter(i => i.toLowerCase() === extension.toLowerCase());
+
+    return matches.length > 0;
+};
+
