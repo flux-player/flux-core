@@ -48,6 +48,8 @@ const syncToInt = (sync: number) => {
  * @param buffer Buffer to parse frame from
  * @param offset Where to start reading from in the buffer
  *
+ * @todo Break down this method. It's become a monolith
+ *
  * @return ID3 metadata
  */
 const decodeFrame = (buffer: ArrayBufferLike, offset: number): PromiseLike<{ size: number, id: string, value: any, lang: any }> => {
