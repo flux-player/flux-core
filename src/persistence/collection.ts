@@ -35,7 +35,7 @@ export default abstract class Collection {
         if (!this._name) throw new Error("A collection should have a name");
         if (!this._structure) throw new Error("No structure has been defined for this collection");
 
-        this._filename = join(this._storageDirectory, stripIllegalCharacters(btoa(this.name)));
+        this._filename = join(this._storageDirectory, stripIllegalCharacters(Buffer.from(this.name).toString('base64')));
     }
 
     setDefaultConfiguration() {
@@ -51,14 +51,26 @@ export default abstract class Collection {
 
     }
 
-    async load() {
+    async load(exists = true) {
         if (!this._filename) throw new Error("No filename has been specified. Did you initialize the collection");
+        if(!exists) return this.save();
 
-        // Read the collection's data
-        const data = await readFile(this._filename);
+        try {
+            // Read the collection's data
+            const data = await readFile(this._filename);
 
-        // Parse JSON string to an object
-        let object = JSON.parse(bufferToString(data));
+            // Parse JSON string to an object
+            let object = JSON.parse(bufferToString(data));
+        } catch (error) {
+            this.load(false);
+        }
+    }
+
+    /**
+     * Initial persist of the collection
+     */
+    save() {
+        
     }
 
     persist() {
@@ -94,4 +106,6 @@ export default abstract class Collection {
      * The structure of the collection (kinda like the schema in a database)
      */
     protected _structure: Structure = new Structure([]);
+
+    protected _data: [] = [];
 }
