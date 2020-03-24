@@ -25,6 +25,7 @@
     "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
     "node-persist": "^3.0.5",
+    "searchjs": "^1.0.2",
     "text-encoding": "^0.7.0"
   }
 }
