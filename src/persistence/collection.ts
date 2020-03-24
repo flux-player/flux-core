@@ -1,10 +1,10 @@
 import {join} from "path"
 import Structure from "./structure";
 import {env} from "../config/configuration";
-import {readFile, writeFile} from "../extensions/file";
 import {getAppDataDirectory} from "../files/directory";
-import {stripIllegalCharacters, bufferToString} from "../utilities/text";
 import {getCollectionAsJSON} from "../utilities/collections";
+import {stripIllegalCharacters, bufferToString} from "../utilities/text";
+import {readFile, writeFile, ensureFilePathExists} from "../extensions/file";
 
 
 export default abstract class Collection {
@@ -36,7 +36,7 @@ export default abstract class Collection {
         if (!this._name) throw new Error("A collection should have a name");
         if (!this._structure) throw new Error("No structure has been defined for this collection");
 
-        this._filename = join(this._storageDirectory, stripIllegalCharacters(Buffer.from(this.name).toString('base64')));
+        this._filename = join(this._storageDirectory, `${stripIllegalCharacters(Buffer.from(this.name).toString('base64'))}.json`);
     }
 
     setDefaultConfiguration() {
@@ -71,8 +71,13 @@ export default abstract class Collection {
      * Initial persist of the collection
      */
     async save() {
+        // Get this collection's representation as a JSON string
         let output = getCollectionAsJSON(this);
 
+        // Ensure the directory we're writing to exists
+        await ensureFilePathExists(this._storageDirectory);
+
+        // Write a file
         await writeFile(this._filename, output);
     }
 

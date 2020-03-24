@@ -2,9 +2,10 @@
  * Represents a single column in a collection's structure
  */
 export class Column {
-    constructor(key: string, value: string) {
+    constructor(key: string, value: string, required: boolean) {
         this.key = key;
         this.type = value;
+        this.required = required;
     }
 
     /**
@@ -15,5 +16,10 @@ export class Column {
     /**
      * Type of data stored in column
      */
-    type: string
+    type: string;
+
+    /**
+     * Boolean value indicating if the column requires
+     */
+    required: boolean;
 }

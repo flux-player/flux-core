@@ -1,16 +1,18 @@
 import Collection from "../persistence/collection";
 
-export const getCollectionAsJSON = (collection: Collection) : string => {
-    let output = Object.create({
+export const getCollectionAsJSON = (collection: Collection): string => {
+    let output = {
         name: collection.name,
-        structure: [],
+        structure: [] as { key: string, required: boolean, type: string }[],
         data: []
-    });
+    };
 
-    for(let column of collection.structure.columns) {
+
+    for (let column of collection.structure.columns) {
         output.structure.push({
-            key: column.key,
-            type: column.type
+            "key": column.key,
+            "required": !!column.required,
+            "type": column.type
         });
     }
 
