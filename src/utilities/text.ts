@@ -10,6 +10,14 @@ export const randomString = (length: number): string => {
 };
 
 /**
+ * Convert a node buffer to a string
+ *
+ * @param buffer
+ * @param encoding
+ */
+export const bufferToString = (buffer: Buffer, encoding = 'utf8') : string => buffer.toString(encoding);
+
+/**
  * Removes path-illegal characters from a filename
  *
  * @param filename

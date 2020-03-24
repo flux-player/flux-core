@@ -3,7 +3,7 @@ import Structure from "./structure";
 import {env} from "../config/configuration";
 import {readFile} from "../extensions/file";
 import {getAppDataDirectory} from "../files/directory";
-import {stripIllegalCharacters} from "../utilities/text";
+import {stripIllegalCharacters, bufferToString} from "../utilities/text";
 
 
 export default abstract class Collection {
@@ -52,11 +52,13 @@ export default abstract class Collection {
     }
 
     async load() {
-        if(!this._filename) throw new Error("No filename has been specified. Did you initialize the collection");
+        if (!this._filename) throw new Error("No filename has been specified. Did you initialize the collection");
 
+        // Read the collection's data
         const data = await readFile(this._filename);
 
-        console.log(data)
+        // Parse JSON string to an object
+        let object = JSON.parse(bufferToString(data));
     }
 
     persist() {
@@ -71,25 +73,25 @@ export default abstract class Collection {
     /**
      * Boolean value indicating whether the collection automagically persists
      */
-    private _autoPersist = false;
+    protected _autoPersist = false;
 
     /**
      * Where to store the collection
      */
-    private _storageDirectory = "";
+    protected _storageDirectory = "";
 
     /**
      * There actual name of the file that will be written to disk
      */
-    private _filename = "";
+    protected _filename = "";
 
     /**
      * The name of the collection
      */
-    private _name: string = "";
+    protected _name: string = "";
 
     /**
      * The structure of the collection (kinda like the schema in a database)
      */
-    private _structure: Structure = new Structure();
+    protected _structure: Structure = new Structure([]);
 }

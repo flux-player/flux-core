@@ -16,4 +16,9 @@ export default class Structure {
      * The columns making up the collection structure
      */
     private _columns: Column[] = [];
+
+
+    constructor(columns: Column[]) {
+        this._columns = columns;
+    }
 }
