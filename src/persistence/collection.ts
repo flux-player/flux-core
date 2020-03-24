@@ -1,9 +1,10 @@
 import {join} from "path"
 import Structure from "./structure";
 import {env} from "../config/configuration";
-import {readFile} from "../extensions/file";
+import {readFile, writeFile} from "../extensions/file";
 import {getAppDataDirectory} from "../files/directory";
 import {stripIllegalCharacters, bufferToString} from "../utilities/text";
+import {getCollectionAsJSON} from "../utilities/collections";
 
 
 export default abstract class Collection {
@@ -53,7 +54,7 @@ export default abstract class Collection {
 
     async load(exists = true) {
         if (!this._filename) throw new Error("No filename has been specified. Did you initialize the collection");
-        if(!exists) return this.save();
+        if(!exists) return await this.save();
 
         try {
             // Read the collection's data
@@ -69,8 +70,10 @@ export default abstract class Collection {
     /**
      * Initial persist of the collection
      */
-    save() {
-        
+    async save() {
+        let output = getCollectionAsJSON(this);
+
+        await writeFile(this._filename, output);
     }
 
     persist() {
