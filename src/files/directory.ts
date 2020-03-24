@@ -30,9 +30,11 @@ export const walk = async (directory: string, extensions: string[] = [], fileLis
 /**
  * Get the full path to the app data directory
  *
+ * @param append This path is appended to the app data directory
+ *
  * @return string The path to the app data directory
  */
-export const getAppDataDirectory = () : string => {
+export const getAppDataDirectory = (append: string = "") : string => {
     let data = "";
 
     switch (platform) {
@@ -47,5 +49,5 @@ export const getAppDataDirectory = () : string => {
             break;
     }
 
-    return data;
+    return join(data, append);
 };
