@@ -1,12 +1,16 @@
+import {join} from "path"
 import Structure from "./structure";
-import {env} from "../config/configuration"
+import {env} from "../config/configuration";
+import {readFile} from "../extensions/file";
 import {getAppDataDirectory} from "../files/directory";
+import {stripIllegalCharacters} from "../utilities/text";
+
 
 export default abstract class Collection {
     /**
      * Collection constructor
      */
-    constructor() {
+    protected constructor() {
         // Set the defaults
         this.setDefaultConfiguration();
     }
@@ -31,7 +35,7 @@ export default abstract class Collection {
         if (!this._name) throw new Error("A collection should have a name");
         if (!this._structure) throw new Error("No structure has been defined for this collection");
 
-        this._filename = btoa(this.name);
+        this._filename = join(this._storageDirectory, stripIllegalCharacters(btoa(this.name)));
     }
 
     setDefaultConfiguration() {
@@ -47,24 +51,45 @@ export default abstract class Collection {
 
     }
 
-    load() {
+    async load() {
+        if(!this._filename) throw new Error("No filename has been specified. Did you initialize the collection");
 
+        const data = await readFile(this._filename);
+
+        console.log(data)
     }
 
     persist() {
 
     }
 
+    /**
+     * Whether the collection has been loaded from the disk
+     */
     private _isLoaded = false;
+
+    /**
+     * Boolean value indicating whether the collection automagically persists
+     */
     private _autoPersist = false;
+
+    /**
+     * Where to store the collection
+     */
     private _storageDirectory = "";
+
+    /**
+     * There actual name of the file that will be written to disk
+     */
+    private _filename = "";
+
     /**
      * The name of the collection
      */
-    private _name: string;
+    private _name: string = "";
 
     /**
      * The structure of the collection (kinda like the schema in a database)
      */
-    private _structure: Structure;
+    private _structure: Structure = new Structure();
 }

@@ -3,10 +3,17 @@ import {Column} from "./column";
 /**
  * Defines the structure of a collection
  */
-export default interface Structure {
+export default class Structure {
+    get columns(): Column[] {
+        return this._columns;
+    }
+
+    set columns(value: Column[]) {
+        this._columns = value;
+    }
 
     /**
      * The columns making up the collection structure
      */
-    columns: Column[]
+    private _columns: Column[] = [];
 }
