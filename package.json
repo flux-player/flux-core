@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "@types/node": "^13.9.2",
+    "@types/text-encoding": "^0.0.35",
     "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
-    "node-persist": "^3.0.5"
+    "node-persist": "^3.0.5",
+    "text-encoding": "^0.7.0"
   }
 }

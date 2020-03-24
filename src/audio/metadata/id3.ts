@@ -1,3 +1,5 @@
+import {TextDecoder} from "text-encoding"
+
 /**
  * ID3v2 metadata comes at the beginning of the MP3 file and starts off with a 10 byte header.
  */
@@ -52,11 +54,11 @@ const syncToInt = (sync: number) => {
  *
  * @return ID3 metadata
  */
-const decodeFrame = (buffer: ArrayBufferLike, offset: number): PromiseLike<{ size: number, id: string, value: any, lang: any }> => {
-    return new Promise<{ size: number, id: string, value: any, lang: any }>(((resolve, reject) => {
+const decodeFrame = (buffer: ArrayBufferLike, offset: number): PromiseLike<{ size: number, id: string, value: any, lang: any } | null> => {
+    return new Promise<{ size: number, id: string, value: any, lang: any } | null>(((resolve, reject) => {
         let header = new DataView(buffer, offset, HEADER_SIZE + 1);
         if (header.getUint8(0) === 0) {
-            return;
+            return resolve(null);
         }
 
         let id = decode('ascii', new Uint8Array(buffer, offset, 4));
@@ -82,7 +84,7 @@ const decodeFrame = (buffer: ArrayBufferLike, offset: number): PromiseLike<{ siz
             value = new Uint8Array(buffer, contentOffset, contentSize);
         }
 
-        if (!id || !value) reject("ID cannot be empty");
+        if (!id || !value) return reject("ID cannot be empty");
 
         resolve({
             id, value, lang,

@@ -85,4 +85,3 @@ export const hasAnyExtension = (file: string, extensions: string[]) => {
 
     return matches.length > 0;
 };
-
