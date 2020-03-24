@@ -1,4 +1,6 @@
+import os from 'os';
 import {join} from "path"
+import {platform, env} from "process"
 import {readDir, stat, hasAnyExtension} from "../extensions/file";
 
 /**
@@ -22,4 +24,28 @@ export const walk = async (directory: string, extensions: string[] = [], fileLis
     }
 
     return fileList;
+};
+
+
+/**
+ * Get the full path to the app data directory
+ *
+ * @return string The path to the app data directory
+ */
+export const getAppDataDirectory = () : string => {
+    let data = "";
+
+    switch (platform) {
+        case "win32":
+            data = env.APPDATA || join(os.homedir(), 'AppData', 'Roaming');
+            break;
+        case "darwin":
+            data = join(join(os.homedir(), 'Library'), 'Application Support', name);
+            break;
+        case "linux":
+            data = join(env.XDG_DATA_HOME || join(os.homedir(), '.local', 'share'), name);
+            break;
+    }
+
+    return data;
 };
