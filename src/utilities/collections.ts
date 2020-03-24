@@ -7,11 +7,10 @@ export const getCollectionAsJSON = (collection: Collection): string => {
         data: []
     };
 
-
     for (let column of collection.structure.columns) {
         output.structure.push({
             "key": column.key,
-            "required": !!column.required,
+            "required": column.required,
             "type": column.type
         });
     }

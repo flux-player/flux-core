@@ -3,11 +3,36 @@ import Structure from "./structure";
 import {env} from "../config/configuration";
 import {getAppDataDirectory} from "../files/directory";
 import {getCollectionAsJSON} from "../utilities/collections";
-import {stripIllegalCharacters, bufferToString} from "../utilities/text";
-import {readFile, writeFile, ensureFilePathExists} from "../extensions/file";
+import {bufferToString, stripIllegalCharacters} from "../utilities/text";
+import {ensureFilePathExists, readFile, writeFile} from "../extensions/file";
 
 
 export default abstract class Collection {
+    /**
+     * Boolean value indicating whether the collection automagically persists
+     */
+    protected _autoPersist = false;
+
+    /**
+     * Where to store the collection
+     */
+    protected _storageDirectory = "";
+
+    /**
+     * There actual name of the file that will be written to disk
+     */
+    protected _filename = "";
+
+    /**
+     * The data in the collection
+     */
+    protected _data: [] = [];
+
+    /**
+     * Whether the collection has been loaded from the disk
+     */
+    private _isLoaded = false;
+
     /**
      * Collection constructor
      */
@@ -16,6 +41,11 @@ export default abstract class Collection {
         this.setDefaultConfiguration();
     }
 
+    /**
+     * The name of the collection
+     */
+    protected _name: string = "";
+
     get name(): string {
         return this._name;
     }
@@ -23,6 +53,11 @@ export default abstract class Collection {
     set name(value: string) {
         this._name = value;
     }
+
+    /**
+     * The structure of the collection (kinda like the schema in a database)
+     */
+    protected _structure: Structure = new Structure([]);
 
     get structure(): Structure {
         return this._structure;
@@ -54,7 +89,7 @@ export default abstract class Collection {
 
     async load(exists = true) {
         if (!this._filename) throw new Error("No filename has been specified. Did you initialize the collection");
-        if(!exists) return await this.save();
+        if (!exists) return await this.save();
 
         try {
             // Read the collection's data
@@ -84,36 +119,4 @@ export default abstract class Collection {
     persist() {
 
     }
-
-    /**
-     * Whether the collection has been loaded from the disk
-     */
-    private _isLoaded = false;
-
-    /**
-     * Boolean value indicating whether the collection automagically persists
-     */
-    protected _autoPersist = false;
-
-    /**
-     * Where to store the collection
-     */
-    protected _storageDirectory = "";
-
-    /**
-     * There actual name of the file that will be written to disk
-     */
-    protected _filename = "";
-
-    /**
-     * The name of the collection
-     */
-    protected _name: string = "";
-
-    /**
-     * The structure of the collection (kinda like the schema in a database)
-     */
-    protected _structure: Structure = new Structure([]);
-
-    protected _data: [] = [];
 }

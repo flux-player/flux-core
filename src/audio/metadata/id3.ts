@@ -76,7 +76,7 @@ const decodeFrame = (buffer: ArrayBufferLike, offset: number): PromiseLike<{ siz
             contentSize -= 3;
         }
 
-        let value = null;
+        let value: null;
         if (id !== 'APIC') {
             value = decode(ID3_ENCODINGS[encoding],
                 new Uint8Array(buffer, contentOffset, contentSize));

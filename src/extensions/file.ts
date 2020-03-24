@@ -1,11 +1,4 @@
-import {
-    writeFile as _writeFile,
-    stat as _stat,
-    readdir as _readDir,
-    readFile as _readFile,
-    Stats,
-    mkdir
-} from "fs"
+import {mkdir, readdir as _readDir, readFile as _readFile, stat as _stat, Stats, writeFile as _writeFile} from "fs"
 import {URL} from "url";
 import {extname} from "path"
 
@@ -27,13 +20,13 @@ export const writeFile = (fileName: string | Buffer | URL, data: string | Buffer
 
 /**
  * Ensure that the given path exists
- * @param path 
- * @param mask 
+ * @param path
+ * @param mask
  */
 export const ensureFilePathExists = (path: string, mask: number = parseInt("0777", 8)): Promise<void> => {
     return new Promise<void>(
         (resolve: (value?: void | PromiseLike<void>) => void,
-            reject: (reason?: any) => void): void => {
+         reject: (reason?: any) => void): void => {
             mkdir(path, mask, (err): void => {
                 if (err) {
                     if (err.code === "EEXIST") {
@@ -45,8 +38,8 @@ export const ensureFilePathExists = (path: string, mask: number = parseInt("0777
                     resolve(); // successfully created folder
                 }
             });
-    });
-}
+        });
+};
 
 /**
  * Asynchronously reads data from a file

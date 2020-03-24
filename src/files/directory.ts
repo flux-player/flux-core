@@ -1,7 +1,7 @@
 import os from 'os';
 import {join} from "path"
-import {platform, env} from "process"
-import {readDir, stat, hasAnyExtension} from "../extensions/file";
+import {env, platform} from "process"
+import {hasAnyExtension, readDir, stat} from "../extensions/file";
 
 /**
  * Walks the given directory, and it's subdirectories and find
@@ -34,7 +34,7 @@ export const walk = async (directory: string, extensions: string[] = [], fileLis
  *
  * @return string The path to the app data directory
  */
-export const getAppDataDirectory = (append: string = "") : string => {
+export const getAppDataDirectory = (append: string = ""): string => {
     let data = "";
 
     switch (platform) {

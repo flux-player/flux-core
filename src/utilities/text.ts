@@ -15,7 +15,7 @@ export const randomString = (length: number): string => {
  * @param buffer
  * @param encoding
  */
-export const bufferToString = (buffer: Buffer, encoding = 'utf8') : string => buffer.toString(encoding);
+export const bufferToString = (buffer: Buffer, encoding = 'utf8'): string => buffer.toString(encoding);
 
 /**
  * Removes path-illegal characters from a filename
