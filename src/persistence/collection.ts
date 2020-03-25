@@ -100,7 +100,7 @@ export default abstract class Collection {
      * @param query
      */
     query(query: Object) {
-
+        matchArray(this.data, query);
     }
 
     /**

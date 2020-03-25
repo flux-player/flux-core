@@ -4,7 +4,7 @@ export const getCollectionAsJSON = (collection: Collection): string => {
     let output = {
         name: collection.name,
         structure: [] as { key: string, required: boolean, type: string }[],
-        data: []
+        data: [] as any[]
     };
 
     for (let column of collection.structure.columns) {
@@ -13,6 +13,10 @@ export const getCollectionAsJSON = (collection: Collection): string => {
             "required": column.required,
             "type": column.type
         });
+    }
+
+    for (let row of collection.data) {
+        output.data.push(row);
     }
 
     return JSON.stringify(output);
