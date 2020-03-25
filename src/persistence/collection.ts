@@ -111,13 +111,13 @@ export default abstract class Collection {
                 return issues.push(`The column '${key}' is not defined on collection structure`);
             }
 
-            let type = typeof row[key];
-            if (column.type !== type) {
-                return issues.push(`The column '${key}' should have data of the type '${type}'`);
+            if (column.required && !row.key) {
+                return issues.push(`The column '${key}' is required to have a value.`);
             }
 
-            if (column.required && !row.key) {
-                return issues.push(`The column '${key}' is required to have a value. '${type}' given`);
+            let type = typeof row[key];
+            if (column.type !== type && type !== "undefined") {
+                return issues.push(`The column '${key}' should have data of the type '${type}'`);
             }
         });
 
