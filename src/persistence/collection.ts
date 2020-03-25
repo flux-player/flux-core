@@ -96,6 +96,39 @@ export default abstract class Collection {
     }
 
     /**
+     * Push a data row to the collection
+     *
+     * @param row
+     */
+    push(row: any) {
+        if (!row) return;
+
+        let issues: string[] = [];
+        Object.keys(row).forEach((key) => {
+            let column = this.structure.columns.find((column) => column.key === key);
+
+            if (!column) {
+                return issues.push(`The column '${key}' is not defined on collection structure`);
+            }
+
+            let type = typeof row[key];
+            if (column.type !== type) {
+                return issues.push(`The column '${key}' should have data of the type '${type}'`);
+            }
+
+            if (column.required && !row.key) {
+                return issues.push(`The column '${key}' is required to have a value. '${type}' given`);
+            }
+        });
+
+
+        if(issues.length) {
+            throw new Error(issues.join(" | "));
+        }
+    }
+
+
+    /**
      * Run a query against the collection
      * @param query
      */
