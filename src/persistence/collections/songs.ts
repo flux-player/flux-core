@@ -8,16 +8,16 @@ export default class SongsCollection extends Collection {
 
     // Define the structure of the collection
     _structure = new Structure([
-        new Column('title', 'string'),
-        new Column('artist', 'string'),
-        new Column('album', 'string'),
-        new Column('albumArtist', 'string'),
-        new Column('trackNumber', 'number'),
-        new Column('trackTotal', 'number'),
-        new Column('albumArt', 'string'),
-        new Column('genre', 'string'),
-        new Column('year', 'string'),
-        new Column('publisher', 'string'),
-        new Column('fileName', 'string'),
+        new Column('title', 'string', false),
+        new Column('artist', 'string', false),
+        new Column('album', 'string', false),
+        new Column('albumArtist', 'string', false),
+        new Column('trackNumber', 'number', false),
+        new Column('trackTotal', 'number', false),
+        new Column('albumArt', 'string', false),
+        new Column('genre', 'string', false),
+        new Column('year', 'string', false),
+        new Column('publisher', 'string', false),
+        new Column('fileName', 'string', false),
     ]);
 }
