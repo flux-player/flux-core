@@ -3,6 +3,12 @@ import Structure from "../structure";
 import {Column} from "../column";
 
 export default class SongsCollection extends Collection {
+    constructor() {
+        super()
+
+        this.init()
+    }
+
     // The name of the collection
     _name = "songs";
 
