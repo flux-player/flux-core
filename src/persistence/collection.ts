@@ -249,7 +249,7 @@ export default abstract class Collection {
    */
   private getBlankSchemaObject() {
     let output: any = {
-      uid: randomString(32)
+      uid: randomString(8)
     };
 
     this.structure.columns.forEach((column) => {
