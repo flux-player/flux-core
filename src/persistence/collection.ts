@@ -4,8 +4,8 @@ import { matchArray } from "searchjs";
 import { env } from "../config/configuration";
 import { getAppDataDirectory } from "../files/directory";
 import { getCollectionAsJSON } from "../utilities/collections";
-import { bufferToString, stripIllegalCharacters } from "../utilities/text";
 import { ensureFilePathExists, readFile, writeFile } from "../extensions/file";
+import { bufferToString, stripIllegalCharacters, randomString } from "../utilities/text";
 
 export default abstract class Collection {
   /**
@@ -128,7 +128,7 @@ export default abstract class Collection {
     }
 
     // Push the data row to the internal collection
-    this.data.push(row);
+    this.data.push(Object.assign(this.getBlankSchemaObject(), row));
 
     // Persist the collection
     if(this._autoPersist) {
@@ -242,5 +242,20 @@ export default abstract class Collection {
 
     // Write a file
     await writeFile(this._filename, output);
+  }
+
+  /**
+   * Get a blank object representing the schema of the collection
+   */
+  private getBlankSchemaObject() {
+    let output: any = {
+      uid: randomString(32)
+    };
+
+    this.structure.columns.forEach((column) => {
+      output[column.key] = null;
+    });
+
+    return output;
   }
 }
