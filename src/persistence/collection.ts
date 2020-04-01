@@ -31,6 +31,9 @@ export default abstract class Collection {
   protected constructor() {
     // Set the defaults
     this.setDefaultConfiguration();
+
+    // Initialize the collection
+    this.init();
   }
 
   /**
