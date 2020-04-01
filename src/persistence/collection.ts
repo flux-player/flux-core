@@ -82,7 +82,7 @@ export default abstract class Collection {
   /**
    * Initializes a collection. Set the concrete collection filename and validate if structure and name are defined
    */
-  init() {
+  private init() {
     if (!this._name) throw new Error("A collection should have a name");
     if (!this._structure)
       throw new Error("No structure has been defined for this collection");
