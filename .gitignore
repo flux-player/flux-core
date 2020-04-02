@@ -42,3 +42,6 @@ yarn.lock
 
 # Ignore test.js
 test.js
+
+# Ignore IDE / Editor files
+.vscode/
