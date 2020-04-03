@@ -1,31 +1,34 @@
 {
-  "name": "flux-core",
+  "name": "@flux/core",
   "version": "0.0.1",
-  "description": "Core components for the Flux project",
+  "description": "Flux Player Core Components - Player",
   "main": "dist/index.js",
   "repository": "https://github.com/flux-player/flux-core.git",
   "author": "Melvin Mupondori",
   "license": "MIT",
-  "types": "dist/types.d.ts",
-  "prepublish": "tsc",
+  "types": "dist/index.d.ts",
+  "prepublish": "build",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build tsconfig.json",
     "test": "jest --forceExit --coverage --verbose",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
     "watch-test": "npm run test -- --watchAll"
   },
   "devDependencies": {
+    "@types/node": "^13.9.2",
+    "@types/text-encoding": "^0.0.35",
     "@types/jest": "^25.1.4",
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0"
   },
   "dependencies": {
-    "@types/node": "^13.9.2",
-    "@types/text-encoding": "^0.0.35",
     "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
-    "node-persist": "^3.0.5",
-    "searchjs": "^1.0.2",
-    "text-encoding": "^0.7.0"
+    "text-encoding": "^0.7.0",
+    "@flux/utils": "^0.0.1",
+    "@flux/collections": "^0.0.1"
+  },
+  "directories": {
+    "../flux-utils"
   }
 }
