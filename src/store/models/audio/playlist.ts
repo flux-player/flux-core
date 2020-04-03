@@ -30,4 +30,12 @@ export default class Playlist extends BaseModel {
         this.createdAt = createdAt;
         this.songs = songs;
     }
+
+    public getSongPosition(song: Song) {
+        return this.songs.indexOf(song);
+    }
+
+    public getAtPosition(index: number) :  | Song {
+        return this.songs[index];
+    }
 }

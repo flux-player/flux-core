@@ -1,5 +1,5 @@
-import {Column, Structure, Collection} from "@flux/collections";
 import Song from "../models/audio/song"
+import {Column, Structure, Collection} from "@flux/collections";
 
 export default class SongsCollection extends Collection<Song> {
     constructor() {

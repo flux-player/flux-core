@@ -1,1 +1,1 @@
-export {read} from "./audio/metadata/id3"
+export {default as AudioPlayer} from "./audio/audio"
