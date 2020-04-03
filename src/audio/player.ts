@@ -1,13 +1,65 @@
-import Song from "../store/models/audio/song"
+import AudioPlayer from "./audio";
+import Song from "../store/models/audio/song";
 import Playlist from "../store/models/audio/playlist";
-import { BroadcastsEvents } from "@flux/utils"
-import {readFileAsArrayBuffer} from "@flux/utils";
+import {BroadcastsEvents, readFileAsArrayBuffer} from "@flux/utils";
+
 
 export default class Player extends BroadcastsEvents {
-    public play(item: Song | Playlist, start: Song | undefined = undefined): void {
+    /**
+     * Internal audio player (Wrapper around the web audio api)
+     */
+    private audioPlayer: AudioPlayer;
+
+    /**
+     * This sets the whether the player is repeating tracks, or playlists
+     */
+    private repeat: RepeatMode = "off";
+
+
+    /**
+     * The current song being played.
+     */
+    private currentSong: Song | undefined;
+
+    /**
+     * Denotes whether we're playing a single song or an entire playlist
+     */
+    protected singlePlayMode: boolean = false;
+
+    /**
+     * If we're playing a playlist, the position where we currently are in the current playlist
+     */
+    protected currentPlaylistPosition: number = -1;
+
+    /**
+     * The playlist currently being played.
+     */
+    private currentPlaylist: Playlist | undefined;
+
+
+    constructor(repeatMode: RepeatMode = "single") {
+        super();
+
+        // Instantiate music player class
+        this.audioPlayer = new AudioPlayer();
+
+        // In the future, try to fetch this from the configuration values
+        this.setRepeatMode(repeatMode);
+
+        // Bind to some events in the internal audio player
+        this.bindToEvents();
+    }
+
+    /**
+     * Play the given song or playlist
+     *
+     * @param item The playlist or song to play
+     * @param start If we're playing a playlist, the song in the playlist to play first
+     */
+    public async play(item: Song | Playlist, start: Song | undefined = undefined): Promise<void> {
         // Check if we're playing a single song
         if (item instanceof Song)
-            return this.playSingle(item);
+            return await this.playSingle(item);
 
         // We're in playlist mode.
         // If we were given a start position, play the playlist passing in the start position
@@ -23,7 +75,7 @@ export default class Player extends BroadcastsEvents {
      * @param playlist The playlist to play
      * @param start If specified the song to start playing
      */
-    private playPlaylist(playlist: Playlist, start: Song | undefined = undefined) {
+    private async playPlaylist(playlist: Playlist, start: Song | undefined = undefined) {
         // Are there any songs in the playlist
         if(!playlist.songs.length) return;
 
@@ -48,7 +100,7 @@ export default class Player extends BroadcastsEvents {
      *
      * @param song
      */
-    private playSingle(song: Song) {
+    private async playSingle(song: Song) {
         // Set the current song
         this.currentSong = song;
 
@@ -66,12 +118,25 @@ export default class Player extends BroadcastsEvents {
         // Load up the song into memory
         let buffer = await readFileAsArrayBuffer(this.currentSong.fileName);
 
-        
+        // Play the song
+        await this.audioPlayer.play(buffer);
     }
 
-    private currentPlaylist: Playlist | undefined;
-    private currentSong: Song | undefined;
-    protected singlePlayMode: boolean = false;
-    protected currentPlaylistPosition: number = -1;
+    /**
+     * Sets the repeat mode of the player
+     *
+     * @param mode
+     */
+    public setRepeatMode(mode: RepeatMode) {
+        this.repeat = mode;
+    }
 
+    /**
+     * Bind to the internal audio player's events
+     */
+    private bindToEvents() {
+        this.audioPlayer.source.onended = async () => {
+            // Playback has ended. Handle this
+        };
+    }
 }
