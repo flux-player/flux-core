@@ -1,12 +1,11 @@
-import Collection from "../collection";
-import Structure from "../structure";
-import {Column} from "../column";
+import {Column, Structure, Collection} from "@flux/collections";
+import Song from "../models/audio/song"
 
-export default class SongsCollection extends Collection {
+export default class SongsCollection extends Collection<Song> {
     constructor() {
-        super()
+        super();
 
-        this.init()
+        this.init();
     }
 
     // The name of the collection
