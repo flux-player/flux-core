@@ -27,8 +27,5 @@
     "text-encoding": "^0.7.0",
     "@flux/utils": "^0.0.1",
     "@flux/collections": "^0.0.1"
-  },
-  "directories": {
-    "../flux-utils"
   }
 }
