@@ -136,8 +136,8 @@ export default class Player extends BroadcastsEvents {
      * Bind to the internal audio player's events
      */
     private bindToEvents() {
-        this.audioPlayer.source.onended = async () => {
-            // Playback has ended. Handle this
-        };
+        // this.audioPlayer.source.onended = async () => {
+        //     // Playback has ended. Handle this
+        // };
     }
 }

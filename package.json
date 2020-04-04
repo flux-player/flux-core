@@ -25,7 +25,7 @@
     "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
     "text-encoding": "^0.7.0",
-    "@flux/utils": "^0.0.1",
-    "@flux/collections": "^0.0.1"
+    "@flux/utils": "file:../flux-utils",
+    "@flux/collections": "file:../flux-collections"
   }
 }
