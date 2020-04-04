@@ -10,6 +10,11 @@ export default class AudioPlayer {
   public source: AudioBufferSourceNode | undefined;
 
   /**
+   * Gain node for the audio player
+   */
+  public gainNode: GainNode;
+
+  /**
    * Boolean value indicating whether
    */
   public playing: boolean = false;
@@ -34,8 +39,12 @@ export default class AudioPlayer {
    */
   private lastPlaytime: number = 0;
 
-  constructor() {
+  constructor(startVolume = .3) {
     this.context = new AudioContext({ latencyHint: "playback" });
+    this.gainNode = this.context.createGain();
+
+    this.gainNode.gain.value = startVolume;
+    this.gainNode.connect(this.context.destination);
   }
 
   /**
@@ -46,13 +55,13 @@ export default class AudioPlayer {
     if (!this.currentAudioBuffer) return;
 
     // If there's an existing SourceNode, disconnect  it
-    if (this.source) this.source.disconnect(this.context.destination);
+    if (this.source) this.source.disconnect(this.gainNode);
 
     // Set the current source
     this.source = this.context.createBufferSource();
 
     // Connect new source to audio context
-    this.source.connect(this.context.destination);
+    this.source.connect(this.gainNode);
 
     // Set the audio source buffer to the buffer of the song we just got
     this.source.buffer = this.currentAudioBuffer;
@@ -145,5 +154,15 @@ export default class AudioPlayer {
 
     // Update flags
     this.playing = false;
+  }
+
+  /**
+   * Set the volume of the player
+   * @param value 
+   */
+  volume(value: number) {
+    if(value < 0 || value > 100) return;
+
+    this.gainNode.gain.value = value / 100;
   }
 }
