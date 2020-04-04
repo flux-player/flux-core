@@ -39,18 +39,22 @@ export default class AudioPlayer {
    */
   private lastPlaytime: number = 0;
 
-  constructor(startVolume = .3) {
+  /**
+   * Audio player constructor
+   * @param startVolume The volume to start playback at
+   */
+  constructor(startVolume: number = 30) {
     this.context = new AudioContext({ latencyHint: "playback" });
     this.gainNode = this.context.createGain();
 
-    this.gainNode.gain.value = startVolume;
+    this.gainNode.gain.value = startVolume / 100;
     this.gainNode.connect(this.context.destination);
   }
 
   /**
    * Create a new AudioBufferSourceNode
    */
-  createSource() {
+  private createSource() {
     // Sanity checking
     if (!this.currentAudioBuffer) return;
 
@@ -72,7 +76,7 @@ export default class AudioPlayer {
    *
    * @param buffer
    */
-  async play(buffer: ArrayBuffer) {
+  public async play(buffer: ArrayBuffer) {
     // Sanity checking
     if (this.playing || !buffer) return;
 
@@ -103,7 +107,7 @@ export default class AudioPlayer {
    * If there's a paused track, resume playback
    *
    */
-  resume() {
+  public resume() {
     // Sanity checks
     if (!this.paused) return;
 
@@ -123,7 +127,7 @@ export default class AudioPlayer {
    * If there's a playing track, pause it
    *
    */
-  pause() {
+  public pause() {
     // Sanity checks
     if (!this.playing || !this.source) return;
 
@@ -142,7 +146,7 @@ export default class AudioPlayer {
   /**
    * Stop playback
    */
-  stop() {
+  public stop() {
     if (!this.source) return;
 
     // Stop playback
@@ -158,11 +162,12 @@ export default class AudioPlayer {
 
   /**
    * Set the volume of the player
-   * @param value 
+   * @param value Set the volume of the player.
    */
-  volume(value: number) {
+  public volume(value: number) {
     if(value < 0 || value > 100) return;
 
+    // Update the gain of the 
     this.gainNode.gain.value = value / 100;
   }
 }
