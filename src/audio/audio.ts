@@ -1,6 +1,12 @@
 export default class AudioPlayer {
+  /**
+   * The audio context being utilized by the audio player
+   */
   public context: AudioContext;
 
+  /**
+   * The current source node
+   */
   public source: AudioBufferSourceNode | undefined;
 
   /**
