@@ -2,7 +2,7 @@
  * Denotes how the player is repeating stuff
  *
  * single - The player is going to repeat the current song until the second coming
- * all - The player is going to repeat the current song until 
+ * all - The player is going to repeat the current song until
  */
 export type RepeatMode = "single" | "all" | "off";
 
@@ -16,4 +16,10 @@ export type RepeatMode = "single" | "all" | "off";
  * repeat.mode.changed - The player's repeat mode has been changed
  * repeating - Fired once when repeat mode is set to single and the player is about to repeat the track
  */
-export type PlayerEvent = "state.stopped" | "state.playing" | "state.paused" | "state.seeking" | "repeat.mode.changed" | "repeating"
+export type PlayerEvent =
+  | "state.stopped"
+  | "state.playing"
+  | "state.paused"
+  | "state.seeking"
+  | "repeat.mode.changed"
+  | "repeating";
