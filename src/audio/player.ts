@@ -82,6 +82,9 @@ export default class MusicPlayer extends BroadcastsEvents {
         );
     }
 
+    /**
+     * Pauses the track being currently played
+     */
     public pause() {
         if(this.state !== "playing") return;
 
@@ -98,7 +101,10 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.stopProgressTracking();
     }
 
-    
+
+    /**
+     * If there's a track that's paused, resume it
+     */
     public resume() {
         if(this.state !== "paused") return;
 
