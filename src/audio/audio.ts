@@ -181,7 +181,7 @@ export default class AudioPlayer {
     return {
       percentage,
       duration: Math.round(duration),
-      position: Math.round(duration),
+      position: Math.round(position),
     };
   }
 
