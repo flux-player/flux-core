@@ -1,3 +1,16 @@
+export interface AudioProgress {
+
+    /**
+     * The position the player is at in the track, in seconds
+     */
+    position: number;
+
+    /**
+     * The duration of the track currently being played
+     */
+    duration: number;
+}
+
 export default class AudioPlayer {
   /**
    * The audio context being utilized by the audio player
@@ -133,8 +146,7 @@ export default class AudioPlayer {
     if (!this.playing || !this.source) return;
 
     // Calculate how far in the track we are
-    this.lastPlaytime =
-      (Date.now() - this.startTimestamp) / 1000 + this.lastPlaytime;
+    this.lastPlaytime = this.calculatePosition();
 
     // Stop the source node from playing
     this.source.stop();
@@ -142,6 +154,26 @@ export default class AudioPlayer {
     // Update flags
     this.playing = false;
     this.paused = true;
+  }
+
+  /**
+   * Get the current approximate progress of the track
+   */
+  protected calculatePosition() : number {
+    return (Date.now() - this.startTimestamp) / 1000 + this.lastPlaytime;
+  }
+
+  /**
+   * Get the current progress of the track being played
+   */
+  public progress() : AudioProgress {
+    if(!this.playing || !this.source || !this.source.buffer) 
+        return {position: -1, duration: -1};
+
+    return {
+      position: this.calculatePosition(),
+      duration: this.source.buffer.length
+    }
   }
 
   /**
