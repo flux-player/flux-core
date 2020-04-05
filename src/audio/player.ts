@@ -1,5 +1,5 @@
 import AudioPlayer, { AudioProgress } from "./audio";
-import {RepeatMode, PlayerEvent} from "./enums"
+import {RepeatMode, PlayerEvent, PlayState} from "./enums"
 import Song from "../store/models/audio/song";
 import Playlist from "../store/models/audio/playlist";
 import {BroadcastsEvents, readFileAsArrayBuffer} from "@flux/utils";
@@ -42,6 +42,16 @@ export default class MusicPlayer extends BroadcastsEvents {
      */
     private currentTrackProgress: AudioProgress = {position: -1, duration: -1};
 
+    /**
+     * The current play state of the music player
+     */
+    private state: PlayState = "stopped";
+
+    /**
+     * Handler for event tracker timeout 
+     */
+    private handle: NodeJS.Timeout | undefined;
+
 
     constructor(repeatMode: RepeatMode = "single") {
         super();
@@ -70,6 +80,10 @@ export default class MusicPlayer extends BroadcastsEvents {
             item,
             start
         );
+    }
+
+    public async pause() {
+
     }
 
     /**
@@ -124,6 +138,9 @@ export default class MusicPlayer extends BroadcastsEvents {
         // Play the song
         await this.audioPlayer.play(buffer);
 
+        // Set the state to playing
+        this.state = "playing";
+
         // Being tracking the progress of the track
         this.trackProgress();
     }
@@ -134,7 +151,7 @@ export default class MusicPlayer extends BroadcastsEvents {
      * @todo Remove direct references to the event, instead, import that value from some constant
      */
     private trackProgress() {
-        setInterval(() => {
+        this.handle = setInterval(() => {
             this.currentTrackProgress = this.audioPlayer.progress();
             
             this.raiseEvent('state.progress.changed', this.currentTrackProgress);
