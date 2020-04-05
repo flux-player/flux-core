@@ -145,7 +145,7 @@ export default class AudioPlayer {
    * If there's a playing track, pause it
    *
    */
-  public pause() {
+  public pause() : void {
     // Sanity checks
     if (!this.playing || !this.source) return;
 
@@ -176,7 +176,7 @@ export default class AudioPlayer {
 
     let position = this.calculatePosition();
     let duration = this.source.buffer.duration;
-    let percentage = Math.round((position / duration) * 100);
+    let percentage = (position / duration) * 100;
 
     // Cap the percentage to 100. In case it overflows,
     // the way we're calculating percentage is not super accurate
@@ -192,7 +192,7 @@ export default class AudioPlayer {
   /**
    * Stop playback
    */
-  public stop() {
+  public stop() : void {
     if (!this.source) return;
 
     // Stop playback
@@ -211,7 +211,7 @@ export default class AudioPlayer {
    * Set the volume of the player
    * @param value Set the volume of the player.
    */
-  public volume(value: number) {
+  public volume(value: number) : void {
     if (value < 0 || value > 100) return;
 
     // Update the gain of the

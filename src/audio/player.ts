@@ -197,7 +197,7 @@ export default class MusicPlayer extends BroadcastsEvents {
             this.currentTrackProgress = this.audioPlayer.progress();
             
             this.raiseEvent('state.progress.changed', this.currentTrackProgress);
-        }, 1000);
+        }, 200);
     }
 
     
