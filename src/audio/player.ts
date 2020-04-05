@@ -82,8 +82,14 @@ export default class MusicPlayer extends BroadcastsEvents {
         );
     }
 
-    public async pause() {
+    public pause() {
+        if(this.state !== "playing") return;
 
+        // Pause the track
+        this.audioPlayer.pause();
+
+        // Fire the event for when track is paused
+        this.raiseEvent('state.paused', null);
     }
 
     /**
@@ -150,7 +156,7 @@ export default class MusicPlayer extends BroadcastsEvents {
      * 
      * @todo Remove direct references to the event, instead, import that value from some constant
      */
-    private trackProgress() {
+    private trackProgress() : void {
         this.handle = setInterval(() => {
             this.currentTrackProgress = this.audioPlayer.progress();
             
