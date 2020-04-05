@@ -88,11 +88,31 @@ export default class MusicPlayer extends BroadcastsEvents {
         // Pause the track
         this.audioPlayer.pause();
 
+        // Set the state of the player to paused
+        this.state = "paused";
+
         // Fire the event for when track is paused
         this.raiseEvent('state.paused', null);
 
         // Stop progress tracking
         this.stopProgressTracking();
+    }
+
+    
+    public resume() {
+        if(this.state !== "paused") return;
+
+        // Pause the track
+        this.audioPlayer.resume();
+
+        // Set the state of the player to paused
+        this.state = "playing";
+
+        // Fire the event for when track is paused
+        this.raiseEvent('state.playing', null);
+
+        // Stop progress tracking
+        this.trackProgress();
     }
 
     /**
