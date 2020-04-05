@@ -178,7 +178,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         if(!this.handle || !window) return;
 
         // Clear the progress track interval
-        window.clearInterval(this.handle);
+        clearInterval(this.handle);
     }
 
     /**
