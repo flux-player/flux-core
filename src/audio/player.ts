@@ -90,6 +90,9 @@ export default class MusicPlayer extends BroadcastsEvents {
 
         // Fire the event for when track is paused
         this.raiseEvent('state.paused', null);
+
+        // Stop progress tracking
+        this.stopProgressTracking();
     }
 
     /**
@@ -147,6 +150,9 @@ export default class MusicPlayer extends BroadcastsEvents {
         // Set the state to playing
         this.state = "playing";
 
+        // Raise the event that we're playing a new song
+        this.raiseEvent('state.playing', this.currentSong);
+
         // Being tracking the progress of the track
         this.trackProgress();
     }
@@ -162,6 +168,17 @@ export default class MusicPlayer extends BroadcastsEvents {
             
             this.raiseEvent('state.progress.changed', this.currentTrackProgress);
         }, 1000);
+    }
+
+    
+    /**
+     * Stops tracking the progress of the track and raising progress events
+     */
+    private stopProgressTracking() : void {
+        if(!this.handle || !window) return;
+
+        // Clear the progress track interval
+        window.clearInterval(this.handle);
     }
 
     /**
