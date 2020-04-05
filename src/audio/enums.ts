@@ -10,7 +10,7 @@ export enum RepeatMode {
     Single,
 }
 
-export type RepeatModeType = keyof typeof PlayState;
+export type RepeatModeType = keyof typeof RepeatMode;
 
 /**
  * Denotes the state of the player

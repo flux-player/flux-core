@@ -1,5 +1,5 @@
 import AudioPlayer, { AudioProgress } from "./audio";
-import {RepeatMode, PlayStateType, PlayerEvent, PlayState} from "./enums"
+import {RepeatMode, PlayStateType, PlayerEvent, PlayState, RepeatModeType} from "./enums"
 import Song from "../store/models/audio/song";
 import Playlist from "../store/models/audio/playlist";
 import {BroadcastsEvents, readFileAsArrayBuffer, EventBus} from "@flux/utils";
@@ -14,8 +14,7 @@ export default class MusicPlayer extends BroadcastsEvents {
     /**
      * This sets the whether the player is repeating tracks, or playlists
      */
-    private repeat: RepeatMode = "off";
-
+    private repeat: RepeatMode = RepeatMode.Off;
 
     /**
      * The current song being played.
@@ -45,7 +44,7 @@ export default class MusicPlayer extends BroadcastsEvents {
     /**
      * The current play state of the music player
      */
-    private state: PlayStateType = "Stopped";
+    private state: PlayState = PlayState.Stopped;
 
     /**
      * Handler for event tracker timeout 
@@ -53,7 +52,7 @@ export default class MusicPlayer extends BroadcastsEvents {
     private handle: NodeJS.Timeout | undefined;
 
 
-    constructor(repeatMode: RepeatMode = "single", eventBus: EventBus | undefined) {
+    constructor(repeatMode: RepeatMode = RepeatMode.Off, eventBus: EventBus | undefined) {
         super(eventBus);
 
         // Instantiate music player class
@@ -86,10 +85,10 @@ export default class MusicPlayer extends BroadcastsEvents {
      * Pauses the track being currently played
      */
     public pause() {
-        if(this.state !== "playing") return;
+        if(this.state !== PlayState.Playing) return;
 
         // Set the state of the player to paused
-        this.state = "paused";
+        this.state = PlayState.Paused;
 
         // Fire the event for when track is paused
         this.raiseEvent('state.paused', null);
@@ -106,13 +105,13 @@ export default class MusicPlayer extends BroadcastsEvents {
      * If there's a track that's paused, resume it
      */
     public resume() {
-        if(this.state !== "paused") return;
+        if(this.state !== PlayState.Paused) return;
 
         // Pause the track
         this.audioPlayer.resume();
 
-        // Set the state of the player to paused
-        this.state = "playing";
+        // Set the state of the player to playing
+        this.state = PlayState.Playing;
 
         // Fire the event for when track is paused
         this.raiseEvent('state.playing', null);
@@ -171,7 +170,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         let buffer = await readFileAsArrayBuffer(this.currentSong.fileName);
         
         // Set the state to playing
-        this.state = "playing";
+        this.state = PlayState.Playing;
 
         // Raise the event that we're playing a new song
         this.raiseEvent('state.playing', this.currentSong);
@@ -226,7 +225,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         if(!this.audioPlayer || !this.audioPlayer.source) return;
 
         this.audioPlayer.source.onended = async () => {
-            if(this.state !== 'playing') return;
+            if(this.state !== PlayState.Playing) return;
             
             // We've reached the end of track, stop tracking it's progress
             this.stopProgressTracking();
@@ -237,7 +236,7 @@ export default class MusicPlayer extends BroadcastsEvents {
             this.audioPlayer.stop();
 
             // Set the state to stopped
-            this.state = "stopped";
+            this.state = PlayState.Stopped;
         };
     }
 }
