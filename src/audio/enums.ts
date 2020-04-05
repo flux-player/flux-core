@@ -4,12 +4,24 @@
  * single - The player is going to repeat the current song until the second coming
  * all - The player is going to repeat the current song until
  */
-export type RepeatMode = "single" | "all" | "off";
+export enum RepeatMode {
+    All,
+    Off,
+    Single,
+}
+
+export type RepeatModeType = keyof typeof PlayState;
 
 /**
  * Denotes the state of the player
  */
-export type PlayState = "playing" | "stopped" | "paused";
+export enum PlayState {
+    Playing,
+    Stopped,
+    Paused
+};
+
+export type PlayStateType = keyof typeof PlayState;
 
 /**
  * The events that can be raised by the player
@@ -22,11 +34,14 @@ export type PlayState = "playing" | "stopped" | "paused";
  * repeat.repeating - Fired once when repeat mode is set to single and the player is about to repeat the track
  * state.progress.change - Fired every second, when the progress of the track changed
  */
-export type PlayerEvent =
-  | "state.stopped"
-  | "state.playing"
-  | "state.paused"
-  | "state.seeking"
-  | "repeat.mode.changed"
-  | "reapeat.repeating"
-  | "state.progress.changed";
+export enum PlayerEvent {
+  Paused,
+  Stopped,
+  Playing,
+  Seeking,
+  Repeating,
+  ProgressUpdated,
+  RepeatModeChanged
+}
+
+export type PlayerEventType = keyof typeof PlayerEvent;

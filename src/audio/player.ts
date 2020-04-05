@@ -1,9 +1,8 @@
 import AudioPlayer, { AudioProgress } from "./audio";
-import {RepeatMode, PlayerEvent, PlayState} from "./enums"
+import {RepeatMode, PlayStateType, PlayerEvent, PlayState} from "./enums"
 import Song from "../store/models/audio/song";
 import Playlist from "../store/models/audio/playlist";
 import {BroadcastsEvents, readFileAsArrayBuffer, EventBus} from "@flux/utils";
-import { threadId } from "worker_threads";
 
 
 export default class MusicPlayer extends BroadcastsEvents {
@@ -46,7 +45,7 @@ export default class MusicPlayer extends BroadcastsEvents {
     /**
      * The current play state of the music player
      */
-    private state: PlayState = "stopped";
+    private state: PlayStateType = "Stopped";
 
     /**
      * Handler for event tracker timeout 
