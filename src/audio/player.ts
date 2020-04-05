@@ -2,7 +2,7 @@ import AudioPlayer, { AudioProgress } from "./audio";
 import {RepeatMode, PlayerEvent, PlayState} from "./enums"
 import Song from "../store/models/audio/song";
 import Playlist from "../store/models/audio/playlist";
-import {BroadcastsEvents, readFileAsArrayBuffer} from "@flux/utils";
+import {BroadcastsEvents, readFileAsArrayBuffer, EventBus} from "@flux/utils";
 
 
 export default class MusicPlayer extends BroadcastsEvents {
@@ -53,8 +53,8 @@ export default class MusicPlayer extends BroadcastsEvents {
     private handle: NodeJS.Timeout | undefined;
 
 
-    constructor(repeatMode: RepeatMode = "single") {
-        super();
+    constructor(repeatMode: RepeatMode = "single", eventBus: EventBus | undefined) {
+        super(eventBus);
 
         // Instantiate music player class
         this.audioPlayer = new AudioPlayer();
