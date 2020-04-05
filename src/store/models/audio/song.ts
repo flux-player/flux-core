@@ -46,7 +46,7 @@ export default class Song extends BaseModel {
      */
     public fileName: string;
 
-    constructor(title: string, artist: string, album: string, albumArtist: string, trackNumber: number, trackTotal: number, albumArt: string, genre: string, year: string, publisher: string, fileName: string) {
+    constructor(title: string = '', artist: string = '', album: string = '', albumArtist: string = '', trackNumber: number = 0, trackTotal: number = 0, albumArt: string = '', genre: string = '', year: string = '', publisher: string = '', fileName: string = '') {
         super();
         
         this.title = title;
