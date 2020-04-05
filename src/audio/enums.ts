@@ -14,7 +14,8 @@ export type RepeatMode = "single" | "all" | "off";
  * state.paused - The player has paused playback
  * state.seeking - The player is seeking on the track
  * repeat.mode.changed - The player's repeat mode has been changed
- * repeating - Fired once when repeat mode is set to single and the player is about to repeat the track
+ * repeat.repeating - Fired once when repeat mode is set to single and the player is about to repeat the track
+ * state.progress.change - Fired every second, when the progress of the track changed
  */
 export type PlayerEvent =
   | "state.stopped"
@@ -22,4 +23,5 @@ export type PlayerEvent =
   | "state.paused"
   | "state.seeking"
   | "repeat.mode.changed"
-  | "repeating";
+  | "reapeat.repeating"
+  | "state.progress.changed";
