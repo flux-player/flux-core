@@ -178,7 +178,8 @@ export default class AudioPlayer {
     let duration = this.source.buffer.duration;
     let percentage = Math.round((position / duration) * 100);
 
-    // Cap the percentage to 100. In case it overflows
+    // Cap the percentage to 100. In case it overflows,
+    // the way we're calculating percentage is not super accurate
     if(percentage > 100) percentage = 100;
 
     return {
