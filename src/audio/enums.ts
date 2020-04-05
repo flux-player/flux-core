@@ -7,6 +7,11 @@
 export type RepeatMode = "single" | "all" | "off";
 
 /**
+ * Denotes the state of the player
+ */
+export type PlayState = "playing" | "stopped" | "paused";
+
+/**
  * The events that can be raised by the player
  *
  * state.stopped - The player has stopped playback. This is not raised when the user paused playback

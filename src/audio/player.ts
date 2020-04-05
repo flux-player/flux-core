@@ -37,7 +37,6 @@ export default class MusicPlayer extends BroadcastsEvents {
      */
     private currentPlaylist: Playlist | undefined;
 
-
     /**
      * The current progress of the track being played, in seconds
      */
@@ -125,6 +124,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         // Play the song
         await this.audioPlayer.play(buffer);
 
+        // Being tracking the progress of the track
         this.trackProgress();
     }
 
