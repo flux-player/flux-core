@@ -186,7 +186,7 @@ export default class AudioPlayer {
     this.source.stop();
     this.source.buffer = null;
 
-    // Unset the current audio buffer
+    // Unset the current audio buffer 
     this.currentAudioBuffer = undefined;
 
     // Update flags

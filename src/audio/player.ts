@@ -1,5 +1,5 @@
-import AudioPlayer from "./audio";
-import {RepeatMode} from "./enums"
+import AudioPlayer, { AudioProgress } from "./audio";
+import {RepeatMode, PlayerEvent} from "./enums"
 import Song from "../store/models/audio/song";
 import Playlist from "../store/models/audio/playlist";
 import {BroadcastsEvents, readFileAsArrayBuffer} from "@flux/utils";
@@ -36,6 +36,12 @@ export default class MusicPlayer extends BroadcastsEvents {
      * The playlist currently being played.
      */
     private currentPlaylist: Playlist | undefined;
+
+
+    /**
+     * The current progress of the track being played, in seconds
+     */
+    private currentTrackProgress: AudioProgress = {position: -1, duration: -1};
 
 
     constructor(repeatMode: RepeatMode = "single") {
@@ -115,9 +121,24 @@ export default class MusicPlayer extends BroadcastsEvents {
 
         // Load up the song into memory
         let buffer = await readFileAsArrayBuffer(this.currentSong.fileName);
-
+        
         // Play the song
         await this.audioPlayer.play(buffer);
+
+        this.trackProgress();
+    }
+
+    /**
+     * Track the progress of the current song being played
+     * 
+     * @todo Remove direct references to the event, instead, import that value from some constant
+     */
+    private trackProgress() {
+        setInterval(() => {
+            this.currentTrackProgress = this.audioPlayer.progress();
+            
+            this.raiseEvent('state.playing', this.currentTrackProgress);
+        }, 1000);
     }
 
     /**
@@ -133,8 +154,10 @@ export default class MusicPlayer extends BroadcastsEvents {
      * Bind to the internal audio player's events
      */
     private bindToEvents() {
-        // this.audioPlayer.source.onended = async () => {
-        //     // Playback has ended. Handle this
-        // };
+        if(!this.audioPlayer || !this.audioPlayer.source) return;
+
+        this.audioPlayer.source.onended = async () => {
+            this.audioPlayer.stop();
+        };
     }
 }
