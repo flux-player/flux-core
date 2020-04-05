@@ -159,6 +159,7 @@ export default class AudioPlayer {
 
     // Update flags
     this.playing = false;
+    this.paused = false;
   }
 
   /**

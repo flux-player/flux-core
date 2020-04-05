@@ -5,7 +5,7 @@ import Playlist from "../store/models/audio/playlist";
 import {BroadcastsEvents, readFileAsArrayBuffer} from "@flux/utils";
 
 
-export default class Player extends BroadcastsEvents {
+export default class MusicPlayer extends BroadcastsEvents {
     /**
      * Internal audio player (Wrapper around the web audio api)
      */
@@ -46,9 +46,6 @@ export default class Player extends BroadcastsEvents {
 
         // In the future, try to fetch this from the configuration values
         this.setRepeatMode(repeatMode);
-
-        // Bind to some events in the internal audio player
-        this.bindToEvents();
     }
 
     /**
@@ -90,7 +87,7 @@ export default class Player extends BroadcastsEvents {
         this.currentPlaylist = playlist;
 
         // Set the current song
-        this.currentSong = playlist.getAtPosition(this.currentPlaylistPosition);
+        this.currentSong = this.currentPlaylist.getAtPosition(this.currentPlaylistPosition);
 
         // Start de beatz
         this.beginPlay();
