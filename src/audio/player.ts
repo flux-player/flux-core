@@ -3,6 +3,7 @@ import {RepeatMode, PlayerEvent, PlayState} from "./enums"
 import Song from "../store/models/audio/song";
 import Playlist from "../store/models/audio/playlist";
 import {BroadcastsEvents, readFileAsArrayBuffer, EventBus} from "@flux/utils";
+import { threadId } from "worker_threads";
 
 
 export default class MusicPlayer extends BroadcastsEvents {
@@ -88,14 +89,14 @@ export default class MusicPlayer extends BroadcastsEvents {
     public pause() {
         if(this.state !== "playing") return;
 
-        // Pause the track
-        this.audioPlayer.pause();
-
         // Set the state of the player to paused
         this.state = "paused";
 
         // Fire the event for when track is paused
         this.raiseEvent('state.paused', null);
+
+        // Pause the track
+        this.audioPlayer.pause();
 
         // Stop progress tracking
         this.stopProgressTracking();
@@ -170,17 +171,20 @@ export default class MusicPlayer extends BroadcastsEvents {
         // Load up the song into memory
         let buffer = await readFileAsArrayBuffer(this.currentSong.fileName);
         
-        // Play the song
-        await this.audioPlayer.play(buffer);
-
         // Set the state to playing
         this.state = "playing";
 
         // Raise the event that we're playing a new song
         this.raiseEvent('state.playing', this.currentSong);
 
+        // Play the song
+        await this.audioPlayer.play(buffer);
+
         // Being tracking the progress of the track
         this.trackProgress();
+
+        // Bind to the internal play-related events of the music player
+        this.bindToEvents();
     }
 
     /**
@@ -223,7 +227,18 @@ export default class MusicPlayer extends BroadcastsEvents {
         if(!this.audioPlayer || !this.audioPlayer.source) return;
 
         this.audioPlayer.source.onended = async () => {
+            if(this.state !== 'playing') return;
+            
+            // We've reached the end of track, stop tracking it's progress
+            this.stopProgressTracking();
+
+            // Stop the internal player, yes, it already stopped when playback ended,
+            // but this is to change the state of the player to stopped. Which is used for 
+            // other things
             this.audioPlayer.stop();
+
+            // Set the state to stopped
+            this.state = "stopped";
         };
     }
 }
