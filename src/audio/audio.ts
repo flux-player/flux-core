@@ -1,14 +1,18 @@
 export interface AudioProgress {
+  /**
+   * The position the player is at in the track, in seconds
+   */
+  position: number;
 
-    /**
-     * The position the player is at in the track, in seconds
-     */
-    position: number;
+  /**
+   * The duration of the track currently being played
+   */
+  duration: number;
 
-    /**
-     * The duration of the track currently being played
-     */
-    duration: number;
+  /**
+   * Showing, 0 - 100 how far into the track we are
+   */
+  percentage: number;
 }
 
 export default class AudioPlayer {
@@ -159,21 +163,26 @@ export default class AudioPlayer {
   /**
    * Get the current approximate progress of the track
    */
-  protected calculatePosition() : number {
+  protected calculatePosition(): number {
     return (Date.now() - this.startTimestamp) / 1000 + this.lastPlaytime;
   }
 
   /**
    * Get the current progress of the track being played
    */
-  public progress() : AudioProgress {
-    if(!this.playing || !this.source || !this.source.buffer) 
-        return {position: -1, duration: -1};
+  public progress(): AudioProgress {
+    if (!this.playing || !this.source || !this.source.buffer)
+      return { position: -1, duration: -1, percentage: -1 };
+
+    let position = this.calculatePosition();
+    let duration = this.source.buffer.duration;
+    let percentage = Math.round((position / duration) * 100);
 
     return {
-      position: this.calculatePosition(),
-      duration: this.source.buffer.length
-    }
+      percentage,
+      duration: Math.round(duration),
+      position: Math.round(duration),
+    };
   }
 
   /**
@@ -186,7 +195,7 @@ export default class AudioPlayer {
     this.source.stop();
     this.source.buffer = null;
 
-    // Unset the current audio buffer 
+    // Unset the current audio buffer
     this.currentAudioBuffer = undefined;
 
     // Update flags
@@ -199,9 +208,9 @@ export default class AudioPlayer {
    * @param value Set the volume of the player.
    */
   public volume(value: number) {
-    if(value < 0 || value > 100) return;
+    if (value < 0 || value > 100) return;
 
-    // Update the gain of the 
+    // Update the gain of the
     this.gainNode.gain.value = value / 100;
   }
 }

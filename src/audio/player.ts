@@ -40,7 +40,7 @@ export default class MusicPlayer extends BroadcastsEvents {
     /**
      * The current progress of the track being played, in seconds
      */
-    private currentTrackProgress: AudioProgress = {position: -1, duration: -1};
+    private currentTrackProgress: AudioProgress = {position: -1, duration: -1, percentage: -1};
 
     /**
      * The current play state of the music player
