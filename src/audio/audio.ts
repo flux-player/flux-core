@@ -114,6 +114,7 @@ export default class AudioPlayer {
     // Create a new source node
     this.createSource();
 
+    this.startTimestamp = Date.now();
     // @ts-ignore
     // This source will always have a value because it's being assigned one on the statement before
     this.source.start(0, this.lastPlaytime);
