@@ -15,17 +15,18 @@
     "watch-test": "npm run test -- --watchAll"
   },
   "devDependencies": {
+    "@types/jest": "^25.1.4",
     "@types/node": "^13.9.2",
     "@types/text-encoding": "^0.0.35",
-    "@types/jest": "^25.1.4",
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0"
   },
   "dependencies": {
+    "@flux/collections": "file:../flux-collections",
+    "@flux/utils": "file:../flux-utils",
     "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
     "text-encoding": "^0.7.0",
-    "@flux/utils": "file:../flux-utils",
-    "@flux/collections": "file:../flux-collections"
+    "typescript": "^3.8.3"
   }
 }
