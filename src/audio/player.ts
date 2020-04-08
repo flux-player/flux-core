@@ -49,6 +49,11 @@ export default class MusicPlayer extends BroadcastsEvents {
      * Handler for event tracker timeout 
      */
     private handle: NodeJS.Timeout | undefined;
+    
+    /**
+     * Specifies if we're currently seeking
+     */
+    private seeking: boolean = false;
 
 
     constructor(repeatMode: RepeatMode = RepeatMode.Off, eventBus: EventBus | undefined) {
@@ -107,6 +112,9 @@ export default class MusicPlayer extends BroadcastsEvents {
     public seek(position: number) {
         // Check if we should restart playback
         let resume = this.state !== PlayState.Paused;
+        
+        // Set the seeking flag to true
+        this.seeking = false;
 
         // If we're not supposed to resume, then just set the position of the track
         if(!resume) return this.setPausedTrackPosition(position);
@@ -251,6 +259,10 @@ export default class MusicPlayer extends BroadcastsEvents {
 
         this.audioPlayer.source.onended = async () => {
             if(this.state !== PlayState.Playing) return;
+            if(this.seeking) {
+                this.seeking = false;
+                return;
+            }
             
             // We've reached the end of track, stop tracking it's progress
             this.stopProgressTracking();
