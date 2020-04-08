@@ -1,6 +1,7 @@
 import { env, walk, readFileAsArrayBuffer } from "@flux/utils";
 import { Song } from "..";
 import { read } from "../audio/metadata/id3";
+import { createSongFromTags } from "../utils/audio";
 
 export class MediaScanner {
     /**
@@ -55,7 +56,7 @@ export class MediaScanner {
                 await readFileAsArrayBuffer(file)
             );
 
-            songs.push(Song.fromTags(details, file));
+            songs.push(createSongFromTags(details, file));
         });
 
         return songs;
