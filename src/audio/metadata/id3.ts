@@ -1,5 +1,14 @@
 import {TextDecoder} from "text-encoding"
 
+export interface ID3Frame {
+    id: string,
+    value: any, 
+    lang: any, 
+    size: number
+};
+
+export interface ID3TagCollection extends Array<ID3Frame> {}
+
 /**
  * ID3v2 metadata comes at the beginning of the MP3 file and starts off with a 10 byte header.
  */
@@ -54,8 +63,8 @@ const syncToInt = (sync: number) => {
  *
  * @return ID3 metadata
  */
-const decodeFrame = (buffer: ArrayBufferLike, offset: number): PromiseLike<{ size: number, id: string, value: any, lang: any } | null> => {
-    return new Promise<{ size: number, id: string, value: any, lang: any } | null>(((resolve, reject) => {
+const decodeFrame = (buffer: ArrayBufferLike, offset: number): PromiseLike<ID3Frame | null> => {
+    return new Promise<ID3Frame | null>(((resolve, reject) => {
         let header = new DataView(buffer, offset, HEADER_SIZE + 1);
         if (header.getUint8(0) === 0) {
             return resolve(null);
@@ -109,7 +118,7 @@ const decode = (format: string, data: Uint8Array) => {
  *
  * @param buffer The data to read from
  */
-export const read = async (buffer: ArrayBufferLike) => {
+export const read = async (buffer: ArrayBufferLike) : Promise<ID3TagCollection> => {
     let header = new DataView(buffer, 0, HEADER_SIZE);
 
     let size = syncToInt(header.getUint32(6));
@@ -117,7 +126,7 @@ export const read = async (buffer: ArrayBufferLike) => {
     let offset = HEADER_SIZE;
     let id3Size = HEADER_SIZE + size;
 
-    let data = [];
+    let data: ID3TagCollection = [];
 
     while (offset < id3Size) {
         let frame = await decodeFrame(buffer, offset);
