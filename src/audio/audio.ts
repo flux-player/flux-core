@@ -221,6 +221,16 @@ export default class AudioPlayer {
   }
 
   /**
+   * If a track is paused, this sets where to resume the track from
+   * @param position 
+   */
+  public setLastTime(position: number) : void {
+    if(!this.paused) return;
+
+    this.lastPlaytime = position;
+  }
+
+  /**
    * Set the volume of the player
    * @param value Set the volume of the player.
    */
