@@ -1,4 +1,6 @@
-import { env, walk } from "@flux/utils";
+import { env, walk, readFileAsArrayBuffer } from "@flux/utils";
+import { Song } from "..";
+import { read } from "../audio/metadata/id3";
 
 export class MediaScanner {
     /**
@@ -17,6 +19,46 @@ export class MediaScanner {
 
         // Watch the watchlist for changes and add the new items to the library
         this.watch();
+    }
+    
+    public async scan() : Promise<Array<Song>> {
+        if(!this.watchlist.length) [];
+
+        // Temporary store
+        let filelist: string[] = [];
+
+        // Iterate over out watch list
+        for(let i = 0; i < this.watchlist.length; i++) {
+            let directory = this.watchlist[i];
+
+            // Walk the directories and get all files matching the specified pattern
+            let files = await walk(directory, ['.mp3']);
+
+            // Push the master list
+            filelist.push(...files)
+        }
+
+
+        return this.bulkReadMediaDetails(filelist);
+    }
+
+    /**
+     * Read the details for the specified tracks
+     * 
+     * @param filelist The list of files to read
+     */
+    private async bulkReadMediaDetails(filelist: string[]): Promise<Song[]> {
+        let songs: Song[] = [];
+        
+        filelist.forEach(async (file) => {
+            let details = read(
+                await readFileAsArrayBuffer(file)
+            );
+
+            let song = new Song();
+        });
+
+        return songs;
     }
 
     /**
