@@ -114,7 +114,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         let resume = this.state !== PlayState.Paused;
         
         // Set the seeking flag to true
-        this.seeking = false;
+        this.seeking = true;
 
         // If we're not supposed to resume, then just set the position of the track
         if(!resume) return this.setPausedTrackPosition(position);
