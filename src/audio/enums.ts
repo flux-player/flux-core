@@ -5,9 +5,9 @@
  * all - The player is going to repeat the current song until
  */
 export enum RepeatMode {
-    All,
-    Off,
-    Single,
+    All = 'all',
+    Off = 'off',
+    Single = 'single',
 }
 
 export type RepeatModeType = keyof typeof RepeatMode;
