@@ -121,6 +121,14 @@ export default class AudioPlayer {
   }
 
   /**
+   * Get the duration of the current track
+   */
+  public currentTrackDuration() : number
+  {
+    return this.currentAudioBuffer?.duration ?? 0;
+  }
+
+  /**
    * If there's a paused track, resume playback
    *
    */
