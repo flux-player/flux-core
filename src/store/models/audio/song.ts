@@ -1,4 +1,5 @@
 import { BaseModel } from "@flux/collections";
+import { ID3TagCollection, ID3Frame } from "../../../audio/metadata/id3";
 
 export default class Song extends BaseModel {
   /**
@@ -72,5 +73,24 @@ export default class Song extends BaseModel {
     this.year = year;
     this.publisher = publisher;
     this.fileName = fileName;
+  }
+
+  /**
+   * Create a new song from the given tags
+   * @param tags 
+   * @param filename 
+   */
+  static fromTags(tags: ID3TagCollection, filename: string) : Song {
+    let song = new Song();
+    tags.forEach((frame: ID3Frame) => {
+      switch(frame.id) {
+        case "TIT2":
+          song.title = frame.value
+          break;
+      }
+    });
+    song.fileName = filename;
+
+    return song;
   }
 }
