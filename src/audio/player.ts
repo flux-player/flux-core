@@ -99,6 +99,11 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.stopProgressTracking();
     }
 
+    /**
+     * Seeks the current track to the specified position,whether it's playing or paused
+     * 
+     * @param position The position in the track to seek to, in seconds
+     */
     public seek(position: number) {
         // Check if we should restart playback
         let resume = this.state !== PlayState.Paused;
