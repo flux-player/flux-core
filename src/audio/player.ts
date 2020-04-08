@@ -2,7 +2,7 @@ import Song from "../store/models/audio/song";
 import {RepeatMode, PlayState} from "./enums";
 import AudioPlayer, { AudioProgress } from "./audio";
 import Playlist from "../store/models/audio/playlist";
-import {BroadcastsEvents, readFileAsArrayBuffer, EventBus, log} from "@flux/utils";
+import {BroadcastsEvents, readFileAsArrayBuffer, EventBus, log, env} from "@flux/utils";
 
 export default class MusicPlayer extends BroadcastsEvents {
     /**
@@ -194,7 +194,7 @@ export default class MusicPlayer extends BroadcastsEvents {
             this.currentTrackProgress = this.audioPlayer.progress();
             
             this.raiseEvent('state.progress.changed', this.currentTrackProgress);
-        }, 200);
+        }, env('FLUX_PLAYER_PROGRESS_FREQUENCY', 500) as number);
     }
 
     
