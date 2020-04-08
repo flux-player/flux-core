@@ -113,8 +113,12 @@ export default class MusicPlayer extends BroadcastsEvents {
         return this.resume(position);
     }
     
+    /**
+     * Set the position of the the currently paused track
+     * @param position How far into the track to resume from, in seconds
+     */
     private setPausedTrackPosition(position: number) {
-        
+        this.audioPlayer.setLastTime(position);
     }
 
     /**
