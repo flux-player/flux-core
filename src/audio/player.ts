@@ -99,15 +99,18 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.stopProgressTracking();
     }
 
+    public seek(position: number) {
+        this.pause();
+    }
 
     /**
      * If there's a track that's paused, resume it
      */
-    public resume() {
+    public resume(from: number = -1) {
         if(this.state !== PlayState.Paused) return;
 
         // Pause the track
-        this.audioPlayer.resume();
+        this.audioPlayer.resume(from);
 
         // Set the state of the player to playing
         this.state = PlayState.Playing;

@@ -124,12 +124,17 @@ export default class AudioPlayer {
    * If there's a paused track, resume playback
    *
    */
-  public resume() {
+  public resume(from: number = -1) {
     // Sanity checks
-    if (!this.paused) return;
+    if (!this.paused || !this.currentAudioBuffer?.duration) return;
 
     // Create a new source node
     this.createSource();
+
+    // Check if the start time is not greater than duration of the track
+    if(from > 0 && from < this.currentAudioBuffer.duration) {
+      this.lastPlaytime = from;
+    }
 
     this.startTimestamp = Date.now();
     // @ts-ignore
