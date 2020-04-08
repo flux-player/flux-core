@@ -35,13 +35,13 @@ export type PlayStateType = keyof typeof PlayState;
  * state.progress.change - Fired every second, when the progress of the track changed
  */
 export enum PlayerEvent {
-  Paused,
-  Stopped,
-  Playing,
-  Seeking,
-  Repeating,
-  ProgressUpdated,
-  RepeatModeChanged
+  Paused = 'state.paused',
+  Stopped = 'state.stopped',
+  Playing = 'state.playing',
+  Seeking = 'state.seeking',
+  Repeating = 'repeat.repeating',
+  ProgressUpdated = 'state.progres.change',
+  RepeatModeChanged = 'repeat.mode.changed'
 }
 
 export type PlayerEventType = keyof typeof PlayerEvent;
