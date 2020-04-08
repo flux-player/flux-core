@@ -1,5 +1,4 @@
 import { BaseModel } from "@flux/collections";
-import { ID3TagCollection, ID3Frame } from "../../../audio/metadata/id3";
 
 export default class Song extends BaseModel {
   /**
