@@ -67,7 +67,7 @@ export default class MusicPlayer extends BroadcastsEvents {
 
   constructor(
     repeatMode: RepeatMode = RepeatMode.Off,
-    eventBus: EventBus | undefined
+    eventBus: EventBus | undefined = undefined
   ) {
     super(eventBus);
 
