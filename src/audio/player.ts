@@ -100,7 +100,21 @@ export default class MusicPlayer extends BroadcastsEvents {
     }
 
     public seek(position: number) {
+        // Check if we should restart playback
+        let resume = this.state !== PlayState.Paused;
+
+        // If we're not supposed to resume, then just set the position of the track
+        if(!resume) return this.setPausedTrackPosition(position);
+
+        // Pause the track so we can resume it from the specified position
         this.pause();
+
+        // Resume the track from the specified position
+        return this.resume(position);
+    }
+    
+    private setPausedTrackPosition(position: number) {
+        
     }
 
     /**
