@@ -160,6 +160,9 @@ export default class MusicPlayer extends BroadcastsEvents {
     // Fire the event for when track is paused
     this.raiseEvent("state.playing", null);
 
+    // Rebind to the new source's event's since the old one was destroyed
+    this.bindToEvents();
+
     // Stop progress tracking
     this.trackProgress();
   }
