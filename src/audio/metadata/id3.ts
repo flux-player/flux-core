@@ -1,8 +1,16 @@
 import {TextDecoder} from "text-encoding"
 
 export interface ID3Frame {
+    /**
+     * The ID of the frame, refer to the ID3 spec to see all the available tags
+     */
     id: string,
+
+    /**
+     * The value of the frame
+     */
     value: any, 
+    
     lang: any, 
     size: number
 };
