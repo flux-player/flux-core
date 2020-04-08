@@ -5,9 +5,9 @@
  * all - The player is going to repeat the current song until
  */
 export enum RepeatMode {
-    All = 'all',
-    Off = 'off',
-    Single = 'single',
+    All = "all",
+    Off = "off",
+    Single = "single",
 }
 
 export type RepeatModeType = keyof typeof RepeatMode;
@@ -16,10 +16,10 @@ export type RepeatModeType = keyof typeof RepeatMode;
  * Denotes the state of the player
  */
 export enum PlayState {
-    Playing = 'playing',
-    Stopped = 'stopped',
-    Paused = 'paused'
-};
+    Playing = "playing",
+    Stopped = "stopped",
+    Paused = "paused",
+}
 
 export type PlayStateType = keyof typeof PlayState;
 
@@ -35,13 +35,13 @@ export type PlayStateType = keyof typeof PlayState;
  * state.progress.change - Fired every second, when the progress of the track changed
  */
 export enum PlayerEvent {
-  Paused = 'state.paused',
-  Stopped = 'state.stopped',
-  Playing = 'state.playing',
-  Seeking = 'state.seeking',
-  Repeating = 'repeat.repeating',
-  ProgressUpdated = 'state.progres.change',
-  RepeatModeChanged = 'repeat.mode.changed'
+    Paused = "state.paused",
+    Stopped = "state.stopped",
+    Playing = "state.playing",
+    Seeking = "state.seeking",
+    Repeating = "repeat.repeating",
+    ProgressUpdated = "state.progres.change",
+    RepeatModeChanged = "repeat.mode.changed",
 }
 
 export type PlayerEventType = keyof typeof PlayerEvent;

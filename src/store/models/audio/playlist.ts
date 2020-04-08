@@ -1,5 +1,5 @@
 import Song from "./song";
-import {BaseModel} from "@flux/collections";
+import { BaseModel } from "@flux/collections";
 
 /**
  * Represents a single playlist
@@ -35,7 +35,7 @@ export default class Playlist extends BaseModel {
         return this.songs.indexOf(song);
     }
 
-    public getAtPosition(index: number) :  | Song {
+    public getAtPosition(index: number): Song {
         return this.songs[index];
     }
 }
