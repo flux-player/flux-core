@@ -51,11 +51,11 @@ export class MediaScanner {
         let songs: Song[] = [];
         
         filelist.forEach(async (file) => {
-            let details = read(
+            let details = await read(
                 await readFileAsArrayBuffer(file)
             );
 
-            let song = new Song();
+            songs.push(Song.fromTags(details, file));
         });
 
         return songs;
