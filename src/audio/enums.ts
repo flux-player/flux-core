@@ -16,9 +16,9 @@ export type RepeatModeType = keyof typeof RepeatMode;
  * Denotes the state of the player
  */
 export enum PlayState {
-    Playing,
-    Stopped,
-    Paused
+    Playing = 'playing',
+    Stopped = 'stopped',
+    Paused = 'paused'
 };
 
 export type PlayStateType = keyof typeof PlayState;
