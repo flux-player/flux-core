@@ -14,7 +14,6 @@ export default class PlaylistCollection extends Collection<Playlist> {
     // Define the structure of the collection
     _structure = new Structure([
         new Column("name", "string", true),
-        new Column("uuid", "string", true),
         new Column("createdAt", "string", true),
         new Column("songs", "Array", false),
     ]);

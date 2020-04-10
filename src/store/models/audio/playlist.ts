@@ -10,10 +10,6 @@ export default class Playlist extends BaseModel {
      */
     public name: string;
     /**
-     * A unique identifier for the
-     */
-    public uuid: string;
-    /**
      * Unix timestamp for when the playlist was created
      */
     public createdAt: Number;
@@ -26,7 +22,6 @@ export default class Playlist extends BaseModel {
         super();
 
         this.name = name;
-        this.uuid = uuid;
         this.createdAt = createdAt;
         this.songs = songs;
     }
