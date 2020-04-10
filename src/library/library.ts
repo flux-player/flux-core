@@ -38,7 +38,6 @@ export class Library {
         this.eventBus.listen('application.launches.first', this.onFirstRun);
     }
 
-
     /**
      * This is an event listener for when the application has been launched for the first time
      *
