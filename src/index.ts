@@ -1,8 +1,7 @@
-export { default as AudioPlayer } from "./audio/audio";
-export { default as MusicPlayer } from "./audio/player";
-export { default as Song } from "./store/models/audio/song";
-export { MediaScanner } from "./library/scanner";
-export { Library } from "./library/library";
+export { Library, MediaScanner } from "./library";
+export { AudioPlayer, MusicPlayer } from "./audio";
 
 export { createSongFromTags } from "./utils/audio";
 
+export { Song, Playlist } from "./store/models/audio";
+export { SongCollection, PlaylistCollection } from "./store/collections";
