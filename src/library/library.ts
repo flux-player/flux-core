@@ -12,12 +12,12 @@ export class Library {
     /**
      * A collection of songs in our library
      */
-    private songCollection: SongsCollection;
+    private songs: SongsCollection;
 
     /**
      * A collection of playlists in our library
      */
-    private playlistCollection: PlaylistCollection;
+    private playlists: PlaylistCollection;
 
     /**
      * Event bus for broadcasting events to the other components in the application
@@ -31,8 +31,8 @@ export class Library {
         eventBus: EventBus
     ) {
         this.scanner = scanner;
-        this.songCollection = songCollection;
-        this.playlistCollection = playlistCollection;
+        this.songs = songCollection;
+        this.playlists = playlistCollection;
         this.eventBus = eventBus ?? new EventBus();
 
         this.eventBus.listen(
@@ -54,10 +54,10 @@ export class Library {
         log("info", `Adding media to library, found ${songs.length} songs`);
 
         songs.forEach((song) => {
-            this.songCollection.push(song);
+            this.songs.push(song);
         });
 
-        this.songCollection.persist();
+        this.songs.persist();
         log("info", `Media scan complete`);
     }
 }
