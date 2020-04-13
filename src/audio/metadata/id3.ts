@@ -48,7 +48,7 @@ const LANG_FRAMES = ["USLT", "SYLT", "COMM", "USER"];
  *
  * @return Object The ID3 tag data
  */
-const syncToInt = (sync: number) => {
+function syncToInt(sync: number) {
     const mask = 0b01111111;
 
     let b1 = sync & mask;
@@ -57,7 +57,7 @@ const syncToInt = (sync: number) => {
     let b4 = (sync >> 24) & mask;
 
     return b1 | (b2 << 7) | (b3 << 14) | (b4 << 21);
-};
+}
 
 /**
  * Parse an ID3 frame
@@ -137,18 +137,16 @@ async function decodeFrame(
  * @param format The encoding scheme to decode the data with
  * @param data The data to decode
  */
-const decode = (format: string, data: Uint8Array) => {
+function decode(format: string, data: Uint8Array) {
     return new TextDecoder(format).decode(data);
-};
+}
 
 /**
  * Read the tags from the specified data
  *
  * @param buffer The data to read from
  */
-export const read = async (
-    buffer: ArrayBufferLike
-): Promise<ID3TagCollection> => {
+export async function read(buffer: ArrayBufferLike): Promise<ID3TagCollection> {
     let header = new DataView(buffer, 0, HEADER_SIZE);
 
     let size = syncToInt(header.getUint32(6));
@@ -169,4 +167,4 @@ export const read = async (
     }
 
     return data;
-};
+}
