@@ -103,16 +103,21 @@ async function decodeFrame(
         let data = new Uint8Array(buffer, contentOffset, contentSize);
 
         // Generate the full filename
-        let filename =
+        let directory =
             env("ALBUM_ART_DIRECTORY") ??
             join(
                 getAppDataDirectory("Flux Player"),
-                "Album Arts",
-                randomString(16).concat(".jpg")
+                "Album Arts"
             );
 
         // Ensure that the file exists. Create directory
-        await ensureFilePathExists(filename);
+        await ensureFilePathExists(directory);
+
+        // Join the filename to the directory
+        let filename = join(
+            directory,
+            randomString(16).concat(".jpg")
+        );
 
         // Write the album art to the file
         writeFile(filename, data.slice(13));
