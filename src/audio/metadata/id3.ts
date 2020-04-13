@@ -1,7 +1,7 @@
 import { TextDecoder } from "text-encoding";
 import {
     writeFile,
-    getAppDataDirectory,
+    getAppRootDirectory,
     env,
     randomString,
     ensureFilePathExists,
@@ -106,8 +106,7 @@ async function decodeFrame(
         let directory =
             env("ALBUM_ART_DIRECTORY") ??
             join(
-                getAppDataDirectory("Flux Player"),
-                "Album Arts"
+                await getAppRootDirectory("Album Arts")
             );
 
         // Ensure that the file exists. Create directory
