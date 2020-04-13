@@ -38,10 +38,10 @@ export function createSongFromTags(
                 song.publisher = frame.value;
                 break;
             case "TRCK":
-                song.trackTotal = frame.value;
+                song.trackTotal = parseInt(frame.value);
                 break;
             case "TPOS":
-                song.trackNumber = frame.value;
+                song.trackNumber = parseInt(frame.value);
                 break;
 
             case "APIC":
