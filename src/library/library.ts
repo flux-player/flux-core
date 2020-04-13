@@ -2,6 +2,7 @@ import { EventBus, log } from "@flux/utils";
 import PlaylistCollection from "../store/collections/playlists";
 import SongsCollection from "../store/collections/songs";
 import { MediaScanner } from "./scanner";
+import { Album } from "../audio/album";
 
 export class Library {
     /**
@@ -18,6 +19,35 @@ export class Library {
      * A collection of playlists in our library
      */
     private playlists: PlaylistCollection;
+
+    /**
+     * A filter of sorts that returns the albums in the library
+     *
+     * @todo This needs to made more effecient. Cache results etc etc. Figure it out
+     *
+     */
+    private get albums(): Array<Album> {
+        let output: Array<Album> = [
+            new Album("Unknown Album", "Various Artists", [], "Unknown Year", "")
+        ];
+
+        this.songs.data.forEach((song) => {
+            if(!song.album) {
+                return output[0].songs.push(song)
+            }
+
+            let artist = song.albumArtist ?? "Unknown Artist";
+            let index = output.findIndex((album) => album.name === song.album && artist === album.albumArtist);
+
+            if(index === -1) {
+                return output.push(new Album(song.album, artist, [song], song.year ?? "Unknown Year", song.albumArt))
+            }
+
+            output[index].songs.push(song)
+        })
+
+        return output;
+    }
 
     /**
      * Event bus for broadcasting events to the other components in the application
