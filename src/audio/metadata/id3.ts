@@ -1,4 +1,12 @@
 import { TextDecoder } from "text-encoding";
+import {
+    writeFile,
+    getAppDataDirectory,
+    env,
+    randomString,
+    ensureFilePathExists,
+} from "@flux/utils";
+import { join } from "path";
 
 export interface ID3Frame {
     /**
@@ -61,51 +69,67 @@ const syncToInt = (sync: number) => {
  *
  * @return ID3 metadata
  */
-const decodeFrame = (
+async function decodeFrame(
     buffer: ArrayBufferLike,
     offset: number
-): PromiseLike<ID3Frame | null> => {
-    return new Promise<ID3Frame | null>((resolve, reject) => {
-        let header = new DataView(buffer, offset, HEADER_SIZE + 1);
-        if (header.getUint8(0) === 0) {
-            return resolve(null);
-        }
+): Promise<ID3Frame | null> {
+    let header = new DataView(buffer, offset, HEADER_SIZE + 1);
+    if (header.getUint8(0) === 0) {
+        return null;
+    }
 
-        let id = decode("ascii", new Uint8Array(buffer, offset, 4));
+    let id = decode("ascii", new Uint8Array(buffer, offset, 4));
 
-        let size = header.getUint32(4);
-        let contentSize = size - 1;
-        let encoding = header.getUint8(HEADER_SIZE);
+    let size = header.getUint32(4);
+    let contentSize = size - 1;
+    let encoding = header.getUint8(HEADER_SIZE);
 
-        let contentOffset = offset + HEADER_SIZE + 1;
+    let contentOffset = offset + HEADER_SIZE + 1;
 
-        let lang;
-        if (LANG_FRAMES.includes(id)) {
-            lang = decode("ascii", new Uint8Array(buffer, contentOffset, 3));
-            contentOffset += 3;
-            contentSize -= 3;
-        }
+    let lang;
+    if (LANG_FRAMES.includes(id)) {
+        lang = decode("ascii", new Uint8Array(buffer, contentOffset, 3));
+        contentOffset += 3;
+        contentSize -= 3;
+    }
 
-        let value: Uint8Array | string;
-        if (id !== "APIC") {
-            value = decode(
-                ID3_ENCODINGS[encoding],
-                new Uint8Array(buffer, contentOffset, contentSize)
+    let value: Uint8Array | string;
+    if (id !== "APIC") {
+        value = decode(
+            ID3_ENCODINGS[encoding],
+            new Uint8Array(buffer, contentOffset, contentSize)
+        );
+    } else {
+        let data = new Uint8Array(buffer, contentOffset, contentSize);
+
+        // Generate the full filename
+        let filename =
+            env("ALBUM_ART_DIRECTORY") ??
+            join(
+                getAppDataDirectory("Flux Player"),
+                "Album Arts",
+                randomString(16).concat(".jpg")
             );
-        } else {
-            value = new Uint8Array(buffer, contentOffset, contentSize);
-        }
 
-        if (!id || !value) return reject("ID cannot be empty");
+        // Ensure that the file exists. Create directory
+        await ensureFilePathExists(filename);
 
-        resolve({
-            id,
-            value,
-            lang,
-            size: size + HEADER_SIZE,
-        });
-    });
-};
+        // Write the album art to the file
+        writeFile(filename, data.slice(13));
+
+        // Set the value of the frame to the filename of the stored filename
+        value = filename;
+    }
+
+    if (!id || !value) throw new Error("ID cannot be empty");
+
+    return {
+        id,
+        value,
+        lang,
+        size: size + HEADER_SIZE,
+    };
+}
 
 /**
  * Decode the given data with the specified format
