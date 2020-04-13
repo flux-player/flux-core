@@ -45,10 +45,7 @@ export function createSongFromTags(
                 break;
 
             case "APIC":
-                // TODO: Image needs to be saved somewhere then we can reference the file on disk instead.
-                //  Storing the actual image data in memory will swallow up memory when the library is big enough
-                //  Alternatively, album art can be read on the fly
-                song.albumArt = "." ?? frame.value;
+                song.albumArt = frame.value;
                 break;
         }
     });
