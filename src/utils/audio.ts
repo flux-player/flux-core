@@ -45,7 +45,7 @@ export function createSongFromTags(
                 break;
 
             case "APIC":
-                song.albumArt = frame.value;
+                song.albumArt = frame.value ?? "Unset";
                 break;
         }
     });
