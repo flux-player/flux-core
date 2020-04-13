@@ -103,18 +103,14 @@ async function decodeFrame(
         let data = new Uint8Array(buffer, contentOffset, contentSize);
 
         // Generate the full filename
-        let directory =
-            env("ALBUM_ART_DIRECTORY") ??
-            join(
-                await getAppRootDirectory("Album Arts")
-            );
+        let root = await getAppRootDirectory("Album Arts");
 
         // Ensure that the file exists. Create directory
-        await ensureFilePathExists(directory);
+        await ensureFilePathExists(root);
 
         // Join the filename to the directory
         let filename = join(
-            directory,
+            root,
             randomString(16).concat(".jpg")
         );
 
