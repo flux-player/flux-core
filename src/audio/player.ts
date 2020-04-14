@@ -1,5 +1,5 @@
 import Song from "../store/models/audio/song";
-import { RepeatMode, PlayState } from "./enums";
+import { RepeatMode, PlayState, PlayerEvent } from "./enums";
 import AudioPlayer, { AudioProgress } from "./audio";
 import Playlist from "../store/models/audio/playlist";
 import {
@@ -106,7 +106,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.state = PlayState.Paused;
 
         // Fire the event for when track is paused
-        this.raiseEvent("state.paused", null);
+        this.raiseEvent("player.state", PlayerEvent.Paused);
 
         // Pause the track
         this.audioPlayer.pause();
@@ -158,7 +158,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.state = PlayState.Playing;
 
         // Fire the event for when track is paused
-        this.raiseEvent("state.playing", null);
+        this.raiseEvent("player.state", PlayerEvent.Playing);
 
         // Rebind to the new source's event's since the old one was destroyed
         this.bindToEvents();
@@ -227,7 +227,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.state = PlayState.Playing;
 
         // Raise the event that we're playing a new song
-        this.raiseEvent("state.playing", this.currentSong);
+        this.raiseEvent("player.state", PlayerEvent.Playing, this.currentSong);
 
         // Play the song
         await this.audioPlayer.play(buffer);
@@ -299,6 +299,8 @@ export default class MusicPlayer extends BroadcastsEvents {
 
             // Set the state to stopped
             this.state = PlayState.Stopped;
+
+            this.raiseEvent("player.state", PlayState.Stopped);
         };
     }
 }
