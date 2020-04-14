@@ -242,6 +242,9 @@ export default class MusicPlayer extends BroadcastsEvents {
     public stop() {
         if (this.state === PlayState.Stopped) return;
 
+        // We've reached the end of track, stop tracking it's progress
+        this.stopProgressTracking();
+
         this.audioPlayer.stop();
 
         // Set the state to stopped
@@ -303,9 +306,6 @@ export default class MusicPlayer extends BroadcastsEvents {
                 this.seeking = false;
                 return;
             }
-
-            // We've reached the end of track, stop tracking it's progress
-            this.stopProgressTracking();
 
             // Stop the internal player, yes, it already stopped when playback ended,
             // but this is to change the state of the player to stopped. Which is used for
