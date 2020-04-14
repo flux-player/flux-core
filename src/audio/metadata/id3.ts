@@ -8,11 +8,13 @@ import {
 } from "@flux/utils";
 import { join } from "path";
 
+export type ID3FrameID = "TIT2" | "TPE1" | "TPE2" | "TALB" | "TCON" | "TYER" | "TPUB" | "TRCK" | "TPOS" | "APIC";
+
 export interface ID3Frame {
     /**
      * The ID of the frame, refer to the ID3 spec to see all the available tags
      */
-    id: string;
+    id: ID3FrameID;
 
     /**
      * The value of the frame
@@ -100,25 +102,7 @@ async function decodeFrame(
             new Uint8Array(buffer, contentOffset, contentSize)
         );
     } else {
-        let data = new Uint8Array(buffer, contentOffset, contentSize);
-
-        // Generate the full filename
-        let root = await getAppRootDirectory("Album Arts");
-
-        // Ensure that the file exists. Create directory
-        await ensureFilePathExists(root);
-
-        // Join the filename to the directory
-        let filename = join(
-            root,
-            randomString(16).concat(".jpg")
-        );
-
-        // Write the album art to the file
-        writeFile(filename, data.slice(13));
-
-        // Set the value of the frame to the filename of the stored filename
-        value = filename;
+        value = new Uint8Array(buffer, contentOffset, contentSize);
     }
 
     if (!id || !value) throw new Error("ID cannot be empty");
@@ -129,6 +113,33 @@ async function decodeFrame(
         lang,
         size: size + HEADER_SIZE,
     };
+}
+
+async function saveAlbumArt(tags: ID3TagCollection) {
+    // Get the index of the album art frame
+    let index = tags.findIndex((frame: ID3Frame) => frame.id === 'APIC');
+
+    // Check if the tag collection has the album art collection
+    // If not, return the tag collection unchanged
+    if(index === -1) return tags;
+
+    // Generate the full filename
+    let root = await getAppRootDirectory("Album Arts");
+
+    // Ensure that the file exists. Create directory
+    await ensureFilePathExists(root);
+
+    // Join the filename to the directory
+    let filename = join(
+        root,
+        randomString(16).concat(".jpg")
+    );
+
+    // Write the album art to the file
+    writeFile(filename, tags[''].slice(13));
+
+    // Set the value of the frame to the filename of the stored filename
+    value = filename;
 }
 
 /**
