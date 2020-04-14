@@ -1,14 +1,13 @@
-import Song from "../store/models/audio/song";
-import { RepeatMode, PlayState, PlayerEvent } from "./enums";
-import AudioPlayer, { AudioProgress } from "./audio";
-import Playlist from "../store/models/audio/playlist";
 import {
     BroadcastsEvents,
     readFileAsArrayBuffer,
     EventBus,
-    log,
     env,
 } from "@flux/utils";
+import Song from "../store/models/audio/song";
+import AudioPlayer, { AudioProgress } from "./audio";
+import Playlist from "../store/models/audio/playlist";
+import { RepeatMode, PlayState, PlayerEvent } from "./enums";
 
 export default class MusicPlayer extends BroadcastsEvents {
     /**

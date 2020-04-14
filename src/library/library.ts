@@ -1,6 +1,6 @@
 import { Album } from "../audio/album";
 import { MediaScanner } from "./scanner";
-import { EventBus, log } from "@flux/utils";
+import { EventBus } from "@flux/utils";
 import SongsCollection from "../store/collections/songs";
 import PlaylistCollection from "../store/collections/playlists";
 
@@ -115,12 +115,8 @@ export class Library {
      * It will do it's initial scan of the user's music library
      */
     private async onFirstRun() {
-        log("info", "Begin media scan");
-
         // Scan our media directories for songs
         let songs = await this.scanner.scan();
-
-        log("info", `Adding media to library, found ${songs.length} songs`);
 
         // Iterate over the results, adding each song to the playlist
         songs.forEach((song) => {
@@ -129,6 +125,5 @@ export class Library {
 
         // Persist the song collection to disk
         this.songs.persist();
-        log("info", `Media scan complete`);
     }
 }
