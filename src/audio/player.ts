@@ -213,6 +213,52 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.beginPlay();
     }
 
+    public previous() {
+        // If we're not playing a song, or we're playing a single song or we don't have
+        // a valid playlist, then stop execution
+        if (
+            this.state !== PlayState.Playing ||
+            this.singlePlayMode ||
+            !this.currentPlaylist
+        )
+            return;
+
+        // Flag indicating whether we can go back
+        let canGo = true;
+
+        // Get the index of the next song
+        let prev = this.currentPlaylistPosition - 1;
+
+        // If the next index is within the bounds of our playlist, then
+        // we will play that index next
+        if (prev >= 0) {
+            this.currentPlaylistPosition = prev;
+        }
+        // Else if the index if no longer within the bounds and we've reached the
+        // start of the playlist, so we're going to check if we're set to repeat all
+        // tracks, and if we are, then we're going to start from the end of the
+        // playlist
+        else if (this.repeat === RepeatMode.All) {
+            this.currentPlaylistPosition = this.currentPlaylist.songs.length - 1;
+        } else {
+            canGo = false;
+        }
+
+        // If our checks failed, then we can't go to the previous song for some reason, maybe there's one song in the playlist
+        if(!canGo) return
+
+        // Let's stop the song that's currently being played
+        this.stop();
+
+        // Set the current song
+        this.currentSong = this.currentPlaylist.getAtPosition(
+            this.currentPlaylistPosition
+        );
+
+        // Start de beatz
+        this.beginPlay();
+    }
+
     /**
      * If we're playing a playing, this will skip to the next song in the playlist
      *
