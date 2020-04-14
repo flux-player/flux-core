@@ -292,7 +292,10 @@ export default class MusicPlayer extends BroadcastsEvents {
         // Since we're stopping the track, stop tracking it's progress
         this.stopProgressTracking();
 
-        // Stop the audio player
+
+        // Stop the internal player, yes, it already stopped when playback ended,
+        // but this is to change the state of the player to stopped. Which is used for
+        // other things
         this.audioPlayer.stop();
 
         // Set the state to stopped
@@ -355,9 +358,7 @@ export default class MusicPlayer extends BroadcastsEvents {
                 return;
             }
 
-            // Stop the internal player, yes, it already stopped when playback ended,
-            // but this is to change the state of the player to stopped. Which is used for
-            // other things
+            // Call the stop methods to update states and whatnot
             this.stop();
         };
     }
