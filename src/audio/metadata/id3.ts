@@ -80,7 +80,7 @@ async function decodeFrame(
         return null;
     }
 
-    let id = decode("ascii", new Uint8Array(buffer, offset, 4));
+    let id : ID3FrameID = (decode("ascii", new Uint8Array(buffer, offset, 4)) as unknown) as ID3FrameID ;
 
     let size = header.getUint32(4);
     let contentSize = size - 1;
