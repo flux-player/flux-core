@@ -8,7 +8,47 @@ import {
 } from "@flux/utils";
 import { join } from "path";
 
-export type ID3FrameID = "TIT2" | "TPE1" | "TPE2" | "TALB" | "TCON" | "TYER" | "TPUB" | "TRCK" | "TPOS" | "APIC";
+export type ID3FrameID =
+    /**
+     * The title of the song
+     */
+    | "TIT2"
+    /**
+     * The artists on the song
+     */
+    | "TPE1"
+    /**
+     * The album artist of the song
+     */
+    | "TPE2"
+    /**
+     * The title of the album the song belongs to
+     */
+    | "TALB"
+    /**
+     * The genre of the song
+     */
+    | "TCON"
+    /**
+     * The year the song was released
+     */
+    | "TYER"
+    /**
+     * The publisher of the song
+     */
+    | "TPUB"
+    /**
+     * The number of tracks in the songs' album
+     */
+    | "TRCK"
+    /**
+     * The position of the track in the album
+     */
+    | "TPOS"
+    /**
+     * The song's album art
+     */
+    | "APIC";
 
 export interface ID3Frame {
     /**
@@ -22,6 +62,10 @@ export interface ID3Frame {
     value: any;
 
     lang: any;
+
+    /**
+     * The size of the frame
+     */
     size: number;
 }
 
@@ -80,7 +124,10 @@ async function decodeFrame(
         return null;
     }
 
-    let id : ID3FrameID = (decode("ascii", new Uint8Array(buffer, offset, 4)) as unknown) as ID3FrameID ;
+    let id: ID3FrameID = (decode(
+        "ascii",
+        new Uint8Array(buffer, offset, 4)
+    ) as unknown) as ID3FrameID;
 
     let size = header.getUint32(4);
     let contentSize = size - 1;
@@ -117,11 +164,11 @@ async function decodeFrame(
 
 async function saveAlbumArt(tags: ID3TagCollection) {
     // Get the index of the album art frame
-    let index = tags.findIndex((frame: ID3Frame) => frame.id === 'APIC');
+    let index = tags.findIndex((frame: ID3Frame) => frame.id === "APIC");
 
     // Check if the tag collection has the album art collection
     // If not, return the tag collection unchanged
-    if(index === -1) return tags;
+    if (index === -1) return tags;
 
     // Generate the full filename
     let root = await getAppRootDirectory("Album Arts");
@@ -129,11 +176,10 @@ async function saveAlbumArt(tags: ID3TagCollection) {
     // Ensure that the file exists. Create directory
     await ensureFilePathExists(root);
 
+    let album = tags.find((item) => (item.id = "TALB"));
+
     // Join the filename to the directory
-    let filename = join(
-        root,
-        randomString(16).concat(".jpg")
-    );
+    let filename = join(root, randomString(16).concat(".jpg"));
 
     // Write the album art to the file
     writeFile(filename, tags[index].value.slice(13));
