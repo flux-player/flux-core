@@ -7,6 +7,7 @@ import {
     ensureFilePathExists,
 } from "@flux/utils";
 import { join } from "path";
+import { Album } from "../album";
 
 export type ID3FrameID =
     /**
@@ -162,6 +163,11 @@ async function decodeFrame(
     };
 }
 
+/**
+ * Saves the album art of the track, if it exists
+ *
+ * @param tags
+ */
 async function saveAlbumArt(tags: ID3TagCollection) {
     // Get the index of the album art frame
     let index = tags.findIndex((frame: ID3Frame) => frame.id === "APIC");
@@ -177,9 +183,13 @@ async function saveAlbumArt(tags: ID3TagCollection) {
     await ensureFilePathExists(root);
 
     let album = tags.find((item) => (item.id = "TALB"));
+    let artist = tags.find(item => item.id === "TPE2");
+
+    let albumName = album?.value ?? "Unknown Album";
+    let albumArtist = album?.value ?? "Uknown Artist";
 
     // Join the filename to the directory
-    let filename = join(root, randomString(16).concat(".jpg"));
+    let filename = join(root, `${albumArtist}##${albumName}`.concat(".jpg"));
 
     // Write the album art to the file
     writeFile(filename, tags[index].value.slice(13));
@@ -225,5 +235,5 @@ export async function read(buffer: ArrayBufferLike): Promise<ID3TagCollection> {
         offset += frame.size;
     }
 
-    return data;
+   return await saveAlbumArt(data);
 }
