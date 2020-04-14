@@ -27,24 +27,52 @@ export class Library {
      *
      */
     private get albums(): Array<Album> {
+        // Create the output array and prepopulate it with a default 'Unknown Album' album
+        // This will act as the default album for all songs which don't specify which
+        // album they belong to
         let output: Array<Album> = [
-            new Album("Unknown Album", "Various Artists", [], "Unknown Year", "")
+            new Album(
+                "Unknown Album",
+                "Various Artists",
+                [],
+                "Unknown Year",
+                ""
+            ),
         ];
 
+        // Iterate over all the songs in the library
         this.songs.data.forEach((song) => {
-            if(!song.album) {
-                return output[0].songs.push(song)
+
+            // If a song doesn't specify an album then, let's push it to the 'Unknown Album' album
+            if (!song.album) {
+                return output[0].songs.push(song);
             }
 
+            // Get the artist of the album
             let artist = song.albumArtist ?? "Unknown Artist";
-            let index = output.findIndex((album) => album.name === song.album && artist === album.albumArtist);
 
-            if(index === -1) {
-                return output.push(new Album(song.album, artist, [song], song.year ?? "Unknown Year", song.albumArt))
+            // Check if we'd already made an entry for this current album
+            let index = output.findIndex(
+                (album) =>
+                    album.name === song.album && artist === album.albumArtist
+            );
+
+            // If we didn't already have an entry, then add a new album for this album
+            if (index === -1) {
+                return output.push(
+                    new Album(
+                        song.album,
+                        artist,
+                        [song],
+                        song.year ?? "Unknown Year",
+                        song.albumArt
+                    )
+                );
             }
 
-            output[index].songs.push(song)
-        })
+            // Else just push to that existing album
+            output[index].songs.push(song);
+        });
 
         return output;
     }
@@ -54,17 +82,27 @@ export class Library {
      */
     eventBus: EventBus;
 
+    /**
+     * Create a library instance
+     *
+     * @param scanner The media scanner that will be utilized by the library for media discovery
+     * @param songs The collection of songs in the library
+     * @param playlists The collection of playlists in the library
+     * @param eventBus The event bus which the library will utilize to broadcast and listen for events
+     */
     constructor(
         scanner: MediaScanner,
-        songCollection: SongsCollection,
-        playlistCollection: PlaylistCollection,
+        songs: SongsCollection,
+        playlists: PlaylistCollection,
         eventBus: EventBus
     ) {
+        // Assign property values
         this.scanner = scanner;
-        this.songs = songCollection;
-        this.playlists = playlistCollection;
+        this.songs = songs;
+        this.playlists = playlists;
         this.eventBus = eventBus ?? new EventBus();
 
+        // Listen for the first launch event and scan for media
         this.eventBus.listen(
             "application.launches.first",
             this.onFirstRun.bind(this)
@@ -79,14 +117,17 @@ export class Library {
     private async onFirstRun() {
         log("info", "Begin media scan");
 
+        // Scan our media directories for songs
         let songs = await this.scanner.scan();
 
         log("info", `Adding media to library, found ${songs.length} songs`);
 
+        // Iterate over the results, adding each song to the playlist
         songs.forEach((song) => {
             this.songs.push(song);
         });
 
+        // Persist the song collection to disk
         this.songs.persist();
         log("info", `Media scan complete`);
     }
