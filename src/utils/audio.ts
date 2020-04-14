@@ -1,5 +1,14 @@
 import { Song } from "..";
 import { ID3TagCollection, ID3Frame } from "../audio/metadata/id3";
+import { Playlist } from "../store/models/audio";
+
+/**
+ * Create a quick playlist from a list of songs
+ * @param songs
+ */
+export function createQuickPlaylist(songs: Array<Song>) : Playlist {
+   return new Playlist("Playlist", Date.now(), songs);
+}
 
 /**
  * Create a new song from the given tags
