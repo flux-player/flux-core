@@ -253,7 +253,7 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.raiseEvent('player.state', PlayState.Stopped)
         this.raiseEvent(
             "state.progress.changed",
-            0
+            this._startPosition
         );
     }
 
@@ -313,4 +313,10 @@ export default class MusicPlayer extends BroadcastsEvents {
             this.stop();
         };
     }
+
+    private _startPosition = {
+        position: 0,
+        percentage: 0,
+        duration: 0
+    };
 }
