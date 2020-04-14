@@ -186,7 +186,7 @@ async function saveAlbumArt(tags: ID3TagCollection) {
     let artist = tags.find(item => item.id === "TPE2");
 
     let albumName = album?.value ?? "Unknown Album";
-    let albumArtist = album?.value ?? "Uknown Artist";
+    let albumArtist = artist?.value ?? "Uknown Artist";
 
     // Join the filename to the directory
     let filename = join(root, `${albumArtist}##${albumName}`.concat(".jpg"));
