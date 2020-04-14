@@ -1,8 +1,8 @@
-import { EventBus, log } from "@flux/utils";
-import PlaylistCollection from "../store/collections/playlists";
-import SongsCollection from "../store/collections/songs";
-import { MediaScanner } from "./scanner";
 import { Album } from "../audio/album";
+import { MediaScanner } from "./scanner";
+import { EventBus, log } from "@flux/utils";
+import SongsCollection from "../store/collections/songs";
+import PlaylistCollection from "../store/collections/playlists";
 
 export class Library {
     /**
