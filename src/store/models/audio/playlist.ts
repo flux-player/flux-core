@@ -18,7 +18,7 @@ export default class Playlist extends BaseModel {
      */
     public songs: Song[];
 
-    constructor(name: string, uuid: string, createdAt: Number, songs: Song[]) {
+    constructor(name: string, createdAt: Number, songs: Song[]) {
         super();
 
         this.name = name;
