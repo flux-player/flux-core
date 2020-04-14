@@ -213,6 +213,28 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.beginPlay();
     }
 
+    public next() {
+        if(this.state !== PlayState.Playing || this.singlePlayMode || !this.currentPlaylist) return;
+
+        this.stop();
+
+        let next = this.currentPlaylistPosition + 1;
+
+        if(next <= this.currentPlaylist.songs.length - 1) {
+            this.currentPlaylistPosition = next;
+        } else if (this.repeat === RepeatMode.All) {
+            this.currentPlaylistPosition = 0;
+        }
+
+        // Set the current song
+        this.currentSong = this.currentPlaylist.getAtPosition(
+            this.currentPlaylistPosition
+        );
+
+        // Start de beatz
+        this.beginPlay();
+    }
+
     /**
      * Load up and play the song currently in the currentSong property
      *
