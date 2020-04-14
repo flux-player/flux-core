@@ -1,4 +1,4 @@
-import { AudioProgress } from "./AudioProgress";
+import { AudioProgress } from "./progress";
 
 export default class AudioPlayer {
     /**
@@ -43,6 +43,7 @@ export default class AudioPlayer {
 
     /**
      * Audio player constructor
+     *
      * @param startVolume The volume to start playback at
      */
     constructor(startVolume: number = 30) {
@@ -129,6 +130,7 @@ export default class AudioPlayer {
         }
 
         this.startTimestamp = Date.now();
+
         // @ts-ignore
         // This source will always have a value because it's being assigned one on the statement before
         this.source.start(0, this.lastPlaytime);
@@ -173,6 +175,8 @@ export default class AudioPlayer {
 
         let position = this.calculatePosition();
         let duration = this.source.buffer.duration;
+
+        // Calculate the percentage of the track that's been played
         let percentage = (position / duration) * 100;
 
         // Cap the percentage to 100. In case it overflows,
