@@ -26,6 +26,15 @@ export class Album {
      */
     public releaseYear: string;
 
+    /**
+     * Album constructor
+     *
+     * @param name The name of the album
+     * @param albumArtist The artist of the album
+     * @param songs The songs in the album
+     * @param releaseYear The year the album was released
+     * @param albumArt The album art of the album
+     */
     constructor(name: string, albumArtist: string, songs: Song[], releaseYear: string, albumArt: string) {
         this.name = name;
         this.albumArtist = albumArtist;
