@@ -1,7 +1,7 @@
-import { env, walk, readFileAsArrayBuffer, log } from "@flux/utils";
 import { Song } from "..";
 import { read } from "../audio/metadata/id3";
 import { createSongFromTags } from "../utils/audio";
+import { env, walk, readFileAsArrayBuffer } from "@flux/utils";
 
 export class MediaScanner {
     /**
@@ -11,6 +11,7 @@ export class MediaScanner {
 
     /**
      * Create a new instance of the MediaScanner class
+     *
      * @param watchlist The directories to scan media files in
      */
     constructor(watchlist: Array<string> = []) {
@@ -50,7 +51,7 @@ export class MediaScanner {
     private async bulkReadMediaDetails(filelist: string[]): Promise<Song[]> {
         let songs: Song[] = [];
 
-        for(let i = 0; i < filelist.length; i++) {
+        for (let i = 0; i < filelist.length; i++) {
             let details = await read(await readFileAsArrayBuffer(filelist[i]));
 
             songs.push(createSongFromTags(details, filelist[i]));
