@@ -4,9 +4,9 @@ import {
     EventBus,
     env,
 } from "@flux/utils";
-import Song from "../store/models/audio/song";
 import AudioPlayer from "./audio";
 import { AudioProgress } from "./progress";
+import Song from "../store/models/audio/song";
 import Playlist from "../store/models/audio/playlist";
 import { RepeatMode, PlayState, PlayerEvent } from "./enums";
 
