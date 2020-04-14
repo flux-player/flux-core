@@ -273,8 +273,8 @@ export default class MusicPlayer extends BroadcastsEvents {
         )
             return;
 
-        // Let's stop the song that's currently being played
-        this.stop();
+        // Flag indicating whether we can go back
+        let canGo = true;
 
         // Get the index of the next song
         let next = this.currentPlaylistPosition + 1;
@@ -290,7 +290,15 @@ export default class MusicPlayer extends BroadcastsEvents {
         // playlist
         else if (this.repeat === RepeatMode.All) {
             this.currentPlaylistPosition = 0;
+        } else {
+            canGo = false;
         }
+
+        // If our checks failed, then we can't go to the next song for some reason, maybe there's one song in the playlist
+        if(!canGo) return
+
+        // Let's stop the song that's currently being played
+        this.stop();
 
         // Set the current song
         this.currentSong = this.currentPlaylist.getAtPosition(
