@@ -213,16 +213,36 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.beginPlay();
     }
 
+    /**
+     * If we're playing a playing, this will skip to the next song in the playlist
+     *
+     */
     public next() {
-        if(this.state !== PlayState.Playing || this.singlePlayMode || !this.currentPlaylist) return;
+        // If we're not playing a song, or we're playing a single song or we don't have
+        // a valid playlist, then stop execution
+        if (
+            this.state !== PlayState.Playing ||
+            this.singlePlayMode ||
+            !this.currentPlaylist
+        )
+            return;
 
+        // Let's stop the song that's currently being played
         this.stop();
 
+        // Get the index of the next song
         let next = this.currentPlaylistPosition + 1;
 
-        if(next <= this.currentPlaylist.songs.length - 1) {
+        // If the next index is within the bounds of our playlist, then
+        // we will play that index next
+        if (next <= this.currentPlaylist.songs.length - 1) {
             this.currentPlaylistPosition = next;
-        } else if (this.repeat === RepeatMode.All) {
+        }
+        // Else if the index if no longer within the bounds and we've reached the
+        // end of the playlist, so we're going to check if we're set to repeat all
+        // tracks, and if we are, then we're going to start from the start of the
+        // playlist
+        else if (this.repeat === RepeatMode.All) {
             this.currentPlaylistPosition = 0;
         }
 
@@ -261,22 +281,28 @@ export default class MusicPlayer extends BroadcastsEvents {
         this.bindToEvents();
     }
 
+    /**
+     * Stops the execution of the current song
+     */
     public stop() {
+        // If the player is already stopped then no need to go through
+        // this method again
         if (this.state === PlayState.Stopped) return;
 
-        // We've reached the end of track, stop tracking it's progress
+        // Since we're stopping the track, stop tracking it's progress
         this.stopProgressTracking();
 
+        // Stop the audio player
         this.audioPlayer.stop();
 
         // Set the state to stopped
         this.state = PlayState.Stopped;
 
-        this.raiseEvent('player.state', PlayState.Stopped)
-        this.raiseEvent(
-            "state.progress.changed",
-            this._startPosition
-        );
+        // Raise an event with the updated state of the audio player
+        this.raiseEvent("player.state", PlayState.Stopped);
+
+        // Set the progress of the player back to zero
+        this.raiseEvent("state.progress.changed", this._startPosition);
     }
 
     /**
@@ -336,9 +362,12 @@ export default class MusicPlayer extends BroadcastsEvents {
         };
     }
 
+    /**
+     * An object representing the start position of a song, basically all zeros
+     */
     private _startPosition = {
         position: 0,
         percentage: 0,
-        duration: 0
+        duration: 0,
     };
 }
