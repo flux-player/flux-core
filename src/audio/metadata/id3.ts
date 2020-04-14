@@ -136,10 +136,12 @@ async function saveAlbumArt(tags: ID3TagCollection) {
     );
 
     // Write the album art to the file
-    writeFile(filename, tags[''].slice(13));
+    writeFile(filename, tags[index].value.slice(13));
 
     // Set the value of the frame to the filename of the stored filename
-    value = filename;
+    tags[index].value = filename;
+
+    return tags;
 }
 
 /**
