@@ -292,7 +292,6 @@ export default class MusicPlayer extends BroadcastsEvents {
         // Since we're stopping the track, stop tracking it's progress
         this.stopProgressTracking();
 
-
         // Stop the internal player, yes, it already stopped when playback ended,
         // but this is to change the state of the player to stopped. Which is used for
         // other things
