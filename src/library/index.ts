@@ -1,2 +1,2 @@
-export { MediaScanner } from "./scanner";
 export { Library } from "./library";
+export { MediaScanner } from "./scanner";
