@@ -5,6 +5,7 @@ import {
     env,
     randomString,
     ensureFilePathExists,
+    stripIllegalCharacters,
 } from "@flux/utils";
 import { join } from "path";
 import { Album } from "../album";
@@ -182,14 +183,14 @@ async function saveAlbumArt(tags: ID3TagCollection) {
     // Ensure that the file exists. Create directory
     await ensureFilePathExists(root);
 
-    let album = tags.find((item) => (item.id = "TALB"));
+    let album = tags.find((item) => (item.id === "TALB"));
     let artist = tags.find(item => item.id === "TPE2");
 
     let albumName = album?.value ?? "Unknown Album";
     let albumArtist = artist?.value ?? "Uknown Artist";
 
     // Join the filename to the directory
-    let filename = join(root, `${albumArtist}##${albumName}`.concat(".jpg"));
+    let filename = join(root, stripIllegalCharacters(`${albumArtist} - ${albumName}`).concat(".jpg"));
 
     // Write the album art to the file
     writeFile(filename, tags[index].value.slice(13));

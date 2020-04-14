@@ -16,9 +16,6 @@ export function createSongFromTags(
             case "TIT2":
                 song.title = frame.value;
                 break;
-            case "TIT2":
-                song.title = frame.value;
-                break;
             case "TPE1":
                 song.artist = frame.value;
                 break;
