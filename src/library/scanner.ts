@@ -1,7 +1,7 @@
 import { Song } from "..";
 import { read } from "../audio/metadata/id3";
 import { createSongFromTags } from "../utils/audio";
-import { env, walk, readFileAsArrayBuffer } from "@flux/utils";
+import { env, walk, readFileAsArrayBuffer } from "@flux-player/utils";
 
 export class MediaScanner {
     /**

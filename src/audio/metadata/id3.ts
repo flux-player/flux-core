@@ -6,7 +6,7 @@ import {
     randomString,
     ensureFilePathExists,
     stripIllegalCharacters,
-} from "@flux/utils";
+} from "@flux-player/utils";
 import { join } from "path";
 import { Album } from "../album";
 

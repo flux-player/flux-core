@@ -1,5 +1,5 @@
 import Song from "./song";
-import { BaseModel } from "@flux/collections";
+import { BaseModel } from "@flux-player/collections";
 
 /**
  * Represents a single playlist

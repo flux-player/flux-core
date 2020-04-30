@@ -3,7 +3,7 @@ import {
     readFileAsArrayBuffer,
     EventBus,
     env,
-} from "@flux/utils";
+} from "@flux-player/utils";
 import AudioPlayer from "./audio";
 import { AudioProgress } from "./progress";
 import Song from "../store/models/audio/song";

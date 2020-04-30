@@ -1,5 +1,5 @@
 {
-  "name": "@flux/core",
+  "name": "@flux-player/core",
   "version": "0.0.1",
   "description": "Flux Player Core Components - Player",
   "main": "dist/index.js",
@@ -22,8 +22,8 @@
     "ts-jest": "^24.1.0"
   },
   "dependencies": {
-    "@flux/collections": "file:../flux-collections",
-    "@flux/utils": "file:../flux-utils",
+    "@flux-player/collections": "^0.0.1",
+    "@flux-player/utils": "^0.0.1",
     "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
     "text-encoding": "^0.7.0",

@@ -1,5 +1,5 @@
 import Playlist from "../models/audio/playlist";
-import { Column, Structure, Collection } from "@flux/collections";
+import { Column, Structure, Collection } from "@flux-player/collections";
 
 export default class PlaylistCollection extends Collection<Playlist> {
 

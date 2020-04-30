@@ -1,4 +1,4 @@
-import { BaseModel } from "@flux/collections";
+import { BaseModel } from "@flux-player/collections";
 
 export default class Song extends BaseModel {
     /**

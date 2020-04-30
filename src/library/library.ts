@@ -1,6 +1,6 @@
 import { Album } from "../audio/album";
 import { MediaScanner } from "./scanner";
-import { EventBus } from "@flux/utils";
+import { EventBus } from "@flux-player/utils";
 import SongsCollection from "../store/collections/songs";
 import PlaylistCollection from "../store/collections/playlists";
 
