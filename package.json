@@ -25,7 +25,6 @@
   "dependencies": {
     "@flux-player/collections": "^0.0.1",
     "@flux-player/utils": "^0.0.1",
-    "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
     "text-encoding": "^0.7.0",
     "typescript": "^3.8.3"
