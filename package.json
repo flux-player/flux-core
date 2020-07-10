@@ -25,8 +25,8 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "@flux-player/collections": "^0.0.1",
-    "@flux-player/utils": "^0.0.1",
+    "@flux-player/collections": "*",
+    "@flux-player/utils": "*",
     "dotenv": "^8.2.0",
     "text-encoding": "^0.7.0",
     "typescript": "^3.8.3"
