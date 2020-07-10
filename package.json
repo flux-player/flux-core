@@ -21,7 +21,9 @@
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "dependencies": {
     "@flux-player/collections": "^0.0.1",
     "@flux-player/utils": "^0.0.1",
